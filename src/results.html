@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Current Results — AdminWorks</title>
+<style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    :root{
+      --navy:#0f172a;--blue:#2563eb;--blue-light:#dbeafe;
+      --text:#1e293b;--muted:#64748b;--border:#e2e8f0;--bg:#f8fafc;
+    }
+    html{scroll-behavior:smooth}
+    body{font-family:'Segoe UI',system-ui,sans-serif;color:var(--text);background:#fff;overflow-x:hidden}
+
+    /* ─── HEADER ─── */
+    header{
+      position:sticky;top:0;z-index:200;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 6%;height:70px;
+      background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);
+      border-bottom:1px solid var(--border);
+    }
+    .logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+    .logo-mark{width:36px;height:36px;background:var(--blue);border-radius:8px;display:grid;place-items:center;color:#fff;font-weight:900;font-size:13px}
+    .logo-text{font-weight:800;font-size:1.1rem;color:var(--navy)}
+    .logo-text em{font-style:normal;color:var(--blue)}
+    nav{display:flex;gap:30px;align-items:center}
+    nav a{color:var(--muted);text-decoration:none;font-size:.87rem;font-weight:500;transition:color .15s}
+    nav a:hover{color:var(--navy)}
+    .nav-active{color:var(--navy)!important;font-weight:700!important}
+    .nav-login{border:1.5px solid var(--border);color:var(--navy)!important;padding:7px 18px;border-radius:8px;font-weight:600!important}
+    .nav-login:hover{border-color:var(--blue)!important;color:var(--blue)!important}
+    .nav-cta{background:#000;color:#fff!important;padding:9px 20px;border-radius:8px;font-weight:600!important}
+    .nav-cta:hover{background:#222}
+
+    /* ─── SECTION COMMONS ─── */
+    section.sec{padding:88px 8%}
+    .sec-alt{background:var(--bg)}
+    .sec-tag{font-size:.72rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--blue);margin-bottom:10px}
+    .sec h2{font-size:clamp(1.8rem,2.5vw,2.6rem);font-weight:800;letter-spacing:-1px;color:var(--navy);max-width:640px;line-height:1.2;margin-bottom:14px}
+    .sec .lead{color:var(--muted);font-size:1rem;line-height:1.75;max-width:580px;margin-bottom:56px}
+
+    /* ─── PAGE HERO ─── */
+    .page-hero{
+      background:linear-gradient(135deg,#0f172a 0%,#16254a 40%,#0d2240 70%,#0f172a 100%);
+      background-size:300% 300%;
+      animation:bg-shift 10s ease infinite;
+      padding:80px 8% 72px;color:#fff;
+    }
+    @keyframes bg-shift{
+      0%{background-position:0% 0%}
+      50%{background-position:100% 100%}
+      100%{background-position:0% 0%}
+    }
+    .pill{
+      display:inline-flex;align-items:center;gap:7px;
+      background:rgba(37,99,235,.2);border:1px solid rgba(96,165,250,.35);
+      color:#93c5fd;font-size:.72rem;font-weight:700;letter-spacing:1.3px;
+      text-transform:uppercase;padding:5px 13px;border-radius:100px;
+      margin-bottom:26px;width:fit-content
+    }
+    .pill::before{content:'';width:7px;height:7px;background:#60a5fa;border-radius:50%;animation:pulse-dot 2s ease-in-out infinite}
+    @keyframes pulse-dot{
+      0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(96,165,250,.5)}
+      50%{transform:scale(1.4);box-shadow:0 0 0 6px rgba(96,165,250,0)}
+    }
+    .page-hero h1{font-size:clamp(2.2rem,3.5vw,3.2rem);font-weight:800;line-height:1.1;letter-spacing:-1.5px;margin-bottom:18px}
+    .page-hero h1 mark{background:none;color:#60a5fa}
+    .page-hero p{color:rgba(255,255,255,.65);font-size:1.05rem;line-height:1.75;max-width:520px}
+
+    /* ─── SUMMARY STATS ─── */
+    .stats-section{background:var(--blue);padding:60px 8%}
+    .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:32px;text-align:center}
+    .stat-num{font-size:2.8rem;font-weight:800;color:#fff;letter-spacing:-1px}
+    .stat-lbl{font-size:.82rem;color:rgba(255,255,255,.65);margin-top:6px;letter-spacing:.5px}
+
+    /* ─── RESULTS CARDS ─── */
+    .results-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:28px}
+    .result-card{
+      background:#fff;border-radius:20px;padding:32px;
+      border:1px solid var(--border);
+      transition:box-shadow .2s,transform .2s;
+      position:relative;overflow:hidden;
+    }
+    .result-card::before{
+      content:'';position:absolute;top:0;left:0;right:0;height:4px;
+      background:linear-gradient(90deg,var(--blue),#60a5fa);
+    }
+    .result-card:hover{box-shadow:0 14px 48px rgba(0,0,0,.09);transform:translateY(-4px)}
+    .result-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px}
+    .result-company{font-size:.78rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+    .result-industry{font-size:.82rem;color:var(--blue);font-weight:600}
+    .result-saving{
+      text-align:right;flex-shrink:0;
+      background:var(--blue-light);border-radius:12px;
+      padding:10px 16px;
+    }
+    .saving-pct{font-size:1.9rem;font-weight:800;color:var(--blue);line-height:1;letter-spacing:-1px}
+    .saving-lbl{font-size:.7rem;color:var(--blue);font-weight:600;opacity:.75;margin-top:2px}
+    .result-title{font-size:1.05rem;font-weight:700;color:var(--navy);margin-bottom:10px;line-height:1.35}
+    .result-desc{font-size:.87rem;color:var(--muted);line-height:1.7;margin-bottom:20px}
+    .result-metrics{display:flex;gap:20px;flex-wrap:wrap}
+    .metric{display:flex;flex-direction:column;gap:2px}
+    .metric-val{font-size:1.1rem;font-weight:700;color:var(--navy)}
+    .metric-lbl{font-size:.73rem;color:var(--muted)}
+
+    /* ─── SCROLL REVEAL ─── */
+    .reveal{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s ease}
+    .reveal.visible{opacity:1;transform:translateY(0)}
+    .reveal-d1{transition-delay:.1s}
+    .reveal-d2{transition-delay:.2s}
+    .reveal-d3{transition-delay:.3s}
+    .reveal-d4{transition-delay:.4s}
+    .reveal-d5{transition-delay:.5s}
+
+    /* ─── NAV UNDERLINE ─── */
+    nav a:not(.nav-login):not(.nav-cta){position:relative}
+    nav a:not(.nav-login):not(.nav-cta)::after{
+      content:'';position:absolute;bottom:-4px;left:0;width:0;height:2px;
+      background:var(--blue);transition:width .2s ease;border-radius:2px
+    }
+    nav a:not(.nav-login):not(.nav-cta):hover::after{width:100%}
+
+    /* ─── FOOTER ─── */
+    footer{background:var(--navy);color:rgba(255,255,255,.5);padding:60px 8% 32px}
+    .footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:48px}
+    .footer-brand p{font-size:.85rem;line-height:1.7;color:rgba(255,255,255,.45);margin-top:14px;max-width:280px}
+    .footer-col h4{font-size:.82rem;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:16px}
+    .footer-col a{display:block;color:rgba(255,255,255,.55);text-decoration:none;font-size:.85rem;margin-bottom:10px;transition:color .15s}
+    .footer-col a:hover{color:#fff}
+    .footer-bottom{border-top:1px solid rgba(255,255,255,.08);padding-top:24px;display:flex;justify-content:space-between;align-items:center;font-size:.78rem}
+    .footer-bottom strong{color:rgba(255,255,255,.7)}
+</style>
+</head>
+<body>
+
+<!-- ─── HEADER ─── -->
+<header>
+  <a class="logo" href="index.html">
+    <div class="logo-mark">AW</div>
+    <span class="logo-text">Admin<em>Works</em></span>
+  </a>
+  <nav>
+    <a href="index.html#services">Services</a>
+    <a href="results.html" class="nav-active">Current Results</a>
+    <a href="index.html#about">About</a>
+    <a href="index.html#team">Team</a>
+    <a href="index.html#contact">Contact</a>
+    <a href="login.html" class="nav-login">Log In</a>
+    <a href="index.html#contact" class="nav-cta">Get a Quote</a>
+  </nav>
+</header>
+
+<!-- ─── PAGE HERO ─── -->
+<div class="page-hero">
+  <span class="pill">Verified Client Outcomes</span>
+  <h1>Real cost reductions,<br><mark>real businesses</mark></h1>
+  <p>Ten companies handed us their back-office burden. Here's exactly what changed — in hours recovered, overhead cut, and money saved.</p>
+</div>
+
+<!-- ─── SUMMARY STATS ─── -->
+<div class="stats-section">
+  <div class="stats-grid">
+    <div>
+      <div class="stat-num" data-target="10" data-suffix="">10</div>
+      <div class="stat-lbl">Companies Analysed</div>
+    </div>
+    <div>
+      <div class="stat-num" data-target="34" data-suffix="%">34%</div>
+      <div class="stat-lbl">Avg. Operational Cost Reduction</div>
+    </div>
+    <div>
+      <div class="stat-num" data-target="620" data-suffix="h">620h</div>
+      <div class="stat-lbl">Total Hours Recovered / Month</div>
+    </div>
+    <div>
+      <div class="stat-num" data-target="2.1" data-suffix="x">2.1x</div>
+      <div class="stat-lbl">Average ROI Within 90 Days</div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── RESULTS ─── -->
+<section class="sec">
+  <div class="sec-tag">Case by case</div>
+  <h2>What we achieved — company by company</h2>
+  <p class="lead">All figures are based on client-reported data measured 90 days after onboarding. Company names are anonymised at client request.</p>
+
+  <div class="results-grid">
+
+    <div class="result-card reveal reveal-d1">
+      <div class="result-header">
+        <div>
+          <div class="result-company">Client A</div>
+          <div class="result-industry">E-commerce · 12 employees</div>
+        </div>
+        <div class="result-saving"><div class="saving-pct">41%</div><div class="saving-lbl">cost reduction</div></div>
+      </div>
+      <div class="result-title">Eliminated manual order processing and supplier follow-ups</div>
+      <div class="result-desc">The founder was spending 3+ hours daily chasing suppliers and reconciling orders manually. We took over the full order-to-dispatch coordination, introduced automated status updates, and reduced supplier response time by 60%.</div>
+      <div class="result-metrics">
+        <div class="metric"><div class="metric-val">3.2h/day</div><div class="metric-lbl">Time recovered</div></div>
+        <div class="metric"><div class="metric-val">€1,840/mo</div><div class="metric-lbl">Overhead saved</div></div>
+        <div class="metric"><div class="metric-val">8 weeks</div><div class="metric-lbl">To full impact</div></div>
+      </div>
+    </div>
+
+    <div class="result-card reveal reveal-d2">
+      <div class="result-header">
+        <div>
+          <div class="result-company">Client B</div>
+          <div class="result-industry">Professional Services · 6 employees</div>
+        </div>
+        <div class="result-saving"><div class="saving-pct">38%</div><div class="saving-lbl">cost reduction</div></div>
+      </div>
+      <div class="result-title">Replaced two part-time admin roles with one dedicated specialist</div>
+      <div class="result-desc">Two part-time hires were handling invoicing, client follow-ups, and scheduling at a combined cost of €2,600/mo. We consolidated all three functions under a single AdminWorks specialist, improving turnaround and reducing errors to near zero.</div>
+      <div class="result-metrics">
+        <div class="metric"><div class="metric-val">€980/mo</div><div class="metric-lbl">Net monthly saving</div></div>
+        <div class="metric"><div class="metric-val">0 errors</div><div class="metric-lbl">Invoice mistakes (last 60 days)</div></div>
+        <div class="metric"><div class="metric-val">48h</div><div class="metric-lbl">Onboarding time</div></div>
+      </div>
+    </div>
+
+    <div class="result-card reveal reveal-d3">
+      <div class="result-header">
+        <div>
+          <div class="result-company">Client C</div>
+          <div class="result-industry">SaaS Startup · 18 employees</div>
+        </div>
+        <div class="result-saving"><div class="saving-pct">29%</div><div class="saving-lbl">cost reduction</div></div>
+      </div>
+      <div class="result-title">Freed engineering team from support ticket triage</div>
+      <div class="result-desc">Engineers were spending roughly 6 hours a week on first-line support tickets — a costly misuse of technical talent. We introduced a structured triage system, resolved 72% of tickets without escalation, and cut average response time from 9h to 2h.</div>
+      <div class="result-metrics">
+        <div class="metric"><div class="metric-val">6h/week</div><div class="metric-lbl">Eng. time reclaimed</div></div>
+        <div class="metric"><div class="metric-val">72%</div><div class="metric-lbl">Tickets resolved without escalation</div></div>
+        <div class="metric"><div class="metric-val">2h avg</div><div class="metric-lbl">Response time (was 9h)</div></div>
+      </div>
+    </div>
+
+    <div class="result-card reveal reveal-d4">
+      <div class="result-header">
+        <div>
+          <div class="result-company">Client D</div>
+          <div class="result-industry">Real Estate Agency · 9 employees</div>
+        </div>
+        <div class="result-saving"><div class="saving-pct">45%</div><div class="saving-lbl">cost reduction</div></div>
+      </div>
+      <div class="result-title">Took over listing management, viewings coordination and CRM updates</div>
+      <div class="result-desc">Three agents were each spending 90 minutes a day on admin — updating listings, confirming viewings, and logging notes into the CRM. We absorbed all of it, giving the agents back their afternoons and cutting their overtime by 100%.</div>
+      <div class="result-metrics">
+        <div class="metric"><div class="metric-val">4.5h/day</div><div class="metric-lbl">Agent time recovered</div></div>
+        <div class="metric"><div class="metric-val">€2,200/mo</div><div class="metric-lbl">Overhead saved</div></div>
+        <div class="metric"><div class="metric-val">0 OT</div><div class="metric-lbl">Overtime hours since month 2</div></div>
+      </div>
+    </div>
+
+    <div class="result-card reveal reveal-d1">
+      <div class="result-header">
+        <div>
+          <div class="result-company">Client E</div>
+          <div class="result-industry">Logistics SME · 24 employees</div>
+        </div>
+        <div class="result-saving"><div class="saving-pct">32%</div><div class="saving-lbl">cost reduction</div></div>
+      </div>
+      <div class="result-title">Automated reporting and replaced 14 weekly manual spreadsheets</div>
+      <div class="result-desc">Operations manager was building 14 manual spreadsheets per week across KPIs, fleet utilisation, and delivery metrics. We standardised the data pipeline, built templated dashboards, and reduced reporting time from 7h to 45min.</div>
+      <div class="result-metrics">
+        <div class="metric"><div class="metric-val">6.2h/week</div><div class="metric-lbl">Reporting time saved</div></div>
+        <div class="metric"><div class="metric-val">14 → 1</div><div class="metric-lbl">Spreadsheets consolidated</div></div>
+        <div class="metric"><div class="metric-val">€1,100/mo</div><div class="metric-lbl">Cost reduction</div></div>
+      </div>
+    </div>
+
+    <div class="result-card reveal reveal-d2">
+      <div class="result-header">
+        <div>
+          <div class="result-company">Client F</div>
+          <div class="result-industry">Healthcare Clinic · 11 employees</div>
+        </div>
+        <div class="result-saving"><div class="saving-pct">27%</div><div class="saving-lbl">cost reduction</div></div>
+      </div>
+      <div class="result-title">Streamlined patient scheduling and insurance document processing</div>
+      <div class="result-desc">Reception staff were overwhelmed with back-and-forth scheduling changes and chasing insurance documentation. We implemented a structured intake flow, reduced no-shows by 31%, and cut document turnaround from 4 days to same-day.</div>
+      <div class="result-metrics">
+        <div class="metric"><div class="metric-val">31%</div><div class="metric-lbl">No-show reduction</div></div>
+        <div class="metric"><div class="metric-val">Same-day</div><div class="metric-lbl">Doc turnaround (was 4 days)</div></div>
+        <div class="metric"><div class="metric-val">€760/mo</div><div class="metric-lbl">Admin cost reduction</div></div>
+      </div>
+    </div>
+
+    <div class="result-card reveal reveal-d3">
+      <div class="result-header">
+        <div>
+          <div class="result-company">Client G</div>
+          <div class="result-industry">Consulting Firm · 7 employees</div>
+        </div>
+        <div class="result-saving"><div class="saving-pct">36%</div><div class="saving-lbl">cost reduction</div></div>
+      </div>
+      <div class="result-title">Handled proposal preparation, follow-ups and meeting summaries</div>
+      <div class="result-desc">Senior consultants were writing proposals and post-meeting summaries themselves — high-cost hours on low-leverage work. We took on the full cycle: research, draft, format, and follow-up. Proposal output increased by 40% with no additional headcount.</div>
+      <div class="result-metrics">
+        <div class="metric"><div class="metric-val">+40%</div><div class="metric-lbl">Proposal output</div></div>
+        <div class="metric"><div class="metric-val">8h/week</div><div class="metric-lbl">Senior time recovered</div></div>
+        <div class="metric"><div class="metric-val">€1,650/mo</div><div class="metric-lbl">Equivalent labour saving</div></div>
+      </div>
+    </div>
+
+    <div class="result-card reveal reveal-d4">
+      <div class="result-header">
+        <div>
+          <div class="result-company">Client H</div>
+          <div class="result-industry">Retail Chain · 31 employees</div>
+        </div>
+        <div class="result-saving"><div class="saving-pct">22%</div><div class="saving-lbl">cost reduction</div></div>
+      </div>
+      <div class="result-title">Centralised purchase orders, vendor comms and stock discrepancy resolution</div>
+      <div class="result-desc">Each store manager was handling vendor communications independently, causing duplicated orders and inconsistent pricing. We centralised all procurement admin, eliminated duplicate orders, and recovered €3,400 in misallocated spend in the first month.</div>
+      <div class="result-metrics">
+        <div class="metric"><div class="metric-val">€3,400</div><div class="metric-lbl">Recovered in month 1</div></div>
+        <div class="metric"><div class="metric-val">0 dupes</div><div class="metric-lbl">Duplicate orders since month 2</div></div>
+        <div class="metric"><div class="metric-val">5 stores</div><div class="metric-lbl">Coordinated centrally</div></div>
+      </div>
+    </div>
+
+    <div class="result-card reveal reveal-d1">
+      <div class="result-header">
+        <div>
+          <div class="result-company">Client I</div>
+          <div class="result-industry">Marketing Agency · 15 employees</div>
+        </div>
+        <div class="result-saving"><div class="saving-pct">39%</div><div class="saving-lbl">cost reduction</div></div>
+      </div>
+      <div class="result-title">Offloaded client reporting, timesheet logging and tool subscriptions audit</div>
+      <div class="result-desc">Account managers were producing client reports manually and tracking time in disconnected spreadsheets. We standardised the process, reduced reporting time by 80%, and audited their SaaS stack — cancelling €890/mo in unused tool subscriptions.</div>
+      <div class="result-metrics">
+        <div class="metric"><div class="metric-val">80%</div><div class="metric-lbl">Reporting time reduction</div></div>
+        <div class="metric"><div class="metric-val">€890/mo</div><div class="metric-lbl">Unused tools cancelled</div></div>
+        <div class="metric"><div class="metric-val">3 weeks</div><div class="metric-lbl">To full efficiency</div></div>
+      </div>
+    </div>
+
+    <div class="result-card reveal reveal-d2">
+      <div class="result-header">
+        <div>
+          <div class="result-company">Client J</div>
+          <div class="result-industry">Construction SME · 20 employees</div>
+        </div>
+        <div class="result-saving"><div class="saving-pct">33%</div><div class="saving-lbl">cost reduction</div></div>
+      </div>
+      <div class="result-title">Managed subcontractor onboarding, compliance docs and weekly payroll prep</div>
+      <div class="result-desc">Project managers were losing hours each week gathering compliance certificates, chasing subcontractor paperwork, and preparing payroll inputs manually. We automated the document collection flow, reduced onboarding time per subcontractor from 3 days to 4 hours.</div>
+      <div class="result-metrics">
+        <div class="metric"><div class="metric-val">4h</div><div class="metric-lbl">Subcontractor onboarding (was 3 days)</div></div>
+        <div class="metric"><div class="metric-val">10h/week</div><div class="metric-lbl">PM time recovered</div></div>
+        <div class="metric"><div class="metric-val">€1,500/mo</div><div class="metric-lbl">Admin cost reduction</div></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ─── CTA ─── -->
+<section class="sec sec-alt" style="text-align:center;padding:72px 8%">
+  <div class="sec-tag">Ready to start?</div>
+  <h2 style="max-width:100%;margin:0 auto 16px">See what AdminWorks can do for your operation</h2>
+  <p style="max-width:480px;margin:0 auto 36px;color:var(--muted);line-height:1.75">Book a free 30-minute call. We'll map your biggest time sinks and show you exactly where the savings are.</p>
+  <a href="index.html#contact" style="display:inline-block;background:var(--blue);color:#fff;padding:14px 32px;border-radius:9px;font-weight:700;font-size:.95rem;text-decoration:none;transition:background .15s" onmouseover="this.style.background='#1d4ed8'" onmouseout="this.style.background='var(--blue)'">Book a Free Call</a>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <a class="logo" href="index.html" style="margin-bottom:2px">
+        <div class="logo-mark">AW</div>
+        <span class="logo-text" style="color:#fff">Admin<em>Works</em></span>
+      </a>
+      <p>We help businesses reclaim time by handling the operational work that slows them down. Based in Romania, working globally.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <a href="#">Email Management</a>
+      <a href="#">Invoicing</a>
+      <a href="#">Customer Support</a>
+      <a href="#">Data Entry</a>
+      <a href="#">Reporting</a>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <a href="#">About Us</a>
+      <a href="#">Our Team</a>
+      <a href="results.html">Current Results</a>
+      <a href="#">Blog</a>
+      <a href="#">Careers</a>
+    </div>
+    <div class="footer-col">
+      <h4>Legal &amp; Support</h4>
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
+      <a href="#">GDPR</a>
+      <a href="login.html">Client Login</a>
+      <a href="#">Help Centre</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2024 <strong>AdminWorks Ltd.</strong> Registered in Romania</span>
+    <span>Calea Șerban Vodă 133, Central Business Park, Bucharest, Romania</span>
+  </div>
+</footer>
+
+<script>
+// ── Scroll reveal ──────────────────────────────────────────────
+const revealObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+</script>
+</body>
+</html>

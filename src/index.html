@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AdminWorks — Outsourcing Solutions</title>
+<style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    :root{
+      --navy:#0f172a;--blue:#2563eb;--blue-light:#dbeafe;
+      --text:#1e293b;--muted:#64748b;--border:#e2e8f0;--bg:#f8fafc;
+    }
+    html{scroll-behavior:smooth}
+    body{font-family:'Segoe UI',system-ui,sans-serif;color:var(--text);background:#fff;overflow-x:hidden}
+
+    /* ─── HEADER ─── */
+    header{
+      position:sticky;top:0;z-index:200;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 6%;height:70px;
+      background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);
+      border-bottom:1px solid var(--border);
+    }
+    .logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+    .logo-mark{width:36px;height:36px;background:var(--blue);border-radius:8px;display:grid;place-items:center;color:#fff;font-weight:900;font-size:13px}
+    .logo-text{font-weight:800;font-size:1.1rem;color:var(--navy)}
+    .logo-text em{font-style:normal;color:var(--blue)}
+    nav{display:flex;gap:30px;align-items:center}
+    nav a{color:var(--muted);text-decoration:none;font-size:.87rem;font-weight:500;transition:color .15s}
+    nav a:hover{color:var(--navy)}
+    .nav-login{border:1.5px solid var(--border);color:var(--navy)!important;padding:7px 18px;border-radius:8px;font-weight:600!important}
+    .nav-login:hover{border-color:var(--blue)!important;color:var(--blue)!important}
+    .nav-cta{background:#000;color:#fff!important;padding:9px 20px;border-radius:8px;font-weight:600!important}
+    .nav-cta:hover{background:#222}
+
+    /* ─── HERO ─── */
+    .hero{
+      display:grid;grid-template-columns:1fr 1fr;min-height:calc(100vh - 70px)
+    }
+    .hero-left{
+      display:flex;flex-direction:column;justify-content:center;
+      padding:80px 6% 80px 8%;background:var(--navy);color:#fff
+    }
+    .pill{
+      display:inline-flex;align-items:center;gap:7px;
+      background:rgba(37,99,235,.2);border:1px solid rgba(96,165,250,.35);
+      color:#93c5fd;font-size:.72rem;font-weight:700;letter-spacing:1.3px;
+      text-transform:uppercase;padding:5px 13px;border-radius:100px;
+      margin-bottom:26px;width:fit-content
+    }
+    .pill::before{content:'';width:7px;height:7px;background:#60a5fa;border-radius:50%}
+    .hero-left h1{font-size:clamp(2.2rem,3.5vw,3.5rem);font-weight:800;line-height:1.1;letter-spacing:-1.5px;margin-bottom:20px}
+    .hero-left h1 mark{background:none;color:#60a5fa}
+    .hero-left p{color:rgba(255,255,255,.65);font-size:1.05rem;line-height:1.75;max-width:420px;margin-bottom:36px}
+    .hero-btns{display:flex;gap:12px;flex-wrap:wrap}
+    .btn-white{background:#fff;color:var(--navy);padding:13px 28px;border-radius:9px;font-weight:700;font-size:.95rem;text-decoration:none;transition:opacity .15s}
+    .btn-white:hover{opacity:.9}
+    .btn-ghost{border:1.5px solid rgba(255,255,255,.25);color:rgba(255,255,255,.85);padding:13px 28px;border-radius:9px;font-weight:600;font-size:.95rem;text-decoration:none;transition:border-color .15s}
+    .btn-ghost:hover{border-color:rgba(255,255,255,.5)}
+    .trust{display:flex;align-items:center;gap:18px;margin-top:48px;padding-top:30px;border-top:1px solid rgba(255,255,255,.1)}
+    .t-avatars{display:flex}
+    .t-avatars img{width:36px;height:36px;border-radius:50%;border:2.5px solid var(--navy);object-fit:cover;margin-left:-10px}
+    .t-avatars img:first-child{margin-left:0}
+    .t-text{font-size:.8rem;color:rgba(255,255,255,.5);line-height:1.5}
+    .t-text strong{color:#fff;display:block}
+    .hero-right{position:relative;overflow:hidden;background:#e2e8f0}
+    .hero-right img{width:100%;height:100%;object-fit:cover;display:block}
+    .hero-float{
+      position:absolute;bottom:28px;left:24px;
+      background:#fff;border-radius:14px;padding:14px 18px;
+      display:flex;align-items:center;gap:12px;
+      box-shadow:0 10px 36px rgba(0,0,0,.15);max-width:220px
+    }
+    .float-icon{width:42px;height:42px;border-radius:10px;background:var(--blue-light);display:grid;place-items:center;font-size:20px;flex-shrink:0}
+    .float-lbl{font-size:.72rem;color:var(--muted)}
+    .float-val{font-size:1rem;font-weight:700;color:var(--navy)}
+
+    /* ─── LOGOS STRIP ─── */
+    .logos-strip{background:var(--bg);padding:36px 8%;text-align:center}
+    .logos-strip p{font-size:.78rem;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);margin-bottom:24px}
+    .logos-row{display:flex;justify-content:center;align-items:center;gap:48px;flex-wrap:wrap}
+    .logo-badge{
+      font-size:.95rem;font-weight:700;color:#94a3b8;letter-spacing:.5px;
+      padding:6px 18px;border:1.5px solid var(--border);border-radius:8px
+    }
+
+    /* ─── SECTION COMMONS ─── */
+    section.sec{padding:88px 8%}
+    .sec-tag{font-size:.72rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--blue);margin-bottom:10px}
+    .sec h2{font-size:clamp(1.8rem,2.5vw,2.6rem);font-weight:800;letter-spacing:-1px;color:var(--navy);max-width:540px;line-height:1.2;margin-bottom:14px}
+    .sec .lead{color:var(--muted);font-size:1rem;line-height:1.75;max-width:500px;margin-bottom:48px}
+
+    /* ─── HOW IT WORKS ─── */
+    .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:32px}
+    .step{position:relative;padding-left:60px}
+    .step-num{
+      position:absolute;left:0;top:0;
+      width:42px;height:42px;border-radius:12px;
+      background:var(--blue);color:#fff;
+      font-size:1rem;font-weight:800;
+      display:grid;place-items:center
+    }
+    .step h3{font-size:1.05rem;font-weight:700;color:var(--navy);margin-bottom:8px}
+    .step p{font-size:.88rem;color:var(--muted);line-height:1.65}
+
+    /* ─── SERVICES ─── */
+    .sec-alt{background:var(--bg)}
+    .services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+    .svc{background:#fff;border-radius:16px;padding:28px;border:1px solid var(--border);transition:box-shadow .2s,transform .2s}
+    .svc:hover{box-shadow:0 10px 36px rgba(0,0,0,.08);transform:translateY(-3px)}
+    .svc-icon{width:48px;height:48px;border-radius:12px;background:var(--blue-light);display:grid;place-items:center;font-size:22px;margin-bottom:16px}
+    .svc h3{font-size:1rem;font-weight:700;color:var(--navy);margin-bottom:8px}
+    .svc p{font-size:.85rem;color:var(--muted);line-height:1.65}
+
+    /* ─── TEAM ─── */
+    .team-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+    .team-card{border-radius:16px;overflow:hidden;background:var(--bg);border:1px solid var(--border);transition:transform .2s,box-shadow .2s}
+    .team-card:hover{transform:translateY(-4px);box-shadow:0 14px 40px rgba(0,0,0,.09)}
+    .team-card img{width:100%;height:220px;object-fit:cover;object-position:top;display:block}
+    .team-info{padding:16px}
+    .team-name{font-weight:700;font-size:.95rem;color:var(--navy)}
+    .team-role{font-size:.78rem;color:var(--muted);margin-top:3px}
+
+    /* ─── STATS ─── */
+    .stats-section{background:var(--blue);padding:72px 8%}
+    .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:32px;text-align:center}
+    .stat-num{font-size:2.8rem;font-weight:800;color:#fff;letter-spacing:-1px}
+    .stat-lbl{font-size:.82rem;color:rgba(255,255,255,.65);margin-top:6px;letter-spacing:.5px}
+
+    /* ─── OFFICE PHOTOS ─── */
+    .office-grid{
+      display:grid;
+      grid-template-columns:2fr 1fr 1fr;
+      grid-template-rows:220px 220px;
+      gap:14px;border-radius:20px;overflow:hidden
+    }
+    .office-grid img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s}
+    .office-grid img:hover{transform:scale(1.03)}
+    .office-grid img:first-child{grid-row:span 2}
+
+    /* ─── TESTIMONIALS ─── */
+    .testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+    .testi{background:var(--navy);color:#fff;border-radius:18px;padding:28px}
+    .stars{color:#fbbf24;font-size:.9rem;margin-bottom:14px}
+    .testi blockquote{font-size:.9rem;line-height:1.7;color:rgba(255,255,255,.78);margin-bottom:20px;font-style:italic}
+    .testi-author{display:flex;align-items:center;gap:12px}
+    .testi-author img{width:42px;height:42px;border-radius:50%;object-fit:cover}
+    .author-name{font-weight:700;font-size:.87rem}
+    .author-title{font-size:.76rem;color:rgba(255,255,255,.48);margin-top:2px}
+
+    /* ─── CONTACT ─── */
+    .contact-wrapper{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start}
+    .contact-info{display:flex;flex-direction:column;gap:28px}
+    .contact-item{display:flex;align-items:flex-start;gap:16px}
+    .c-icon{width:44px;height:44px;border-radius:12px;background:var(--blue-light);display:grid;place-items:center;font-size:20px;flex-shrink:0}
+    .c-label{font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:3px}
+    .c-val{font-size:.95rem;color:var(--navy);font-weight:600;text-decoration:none}
+    .c-val:hover{color:var(--blue)}
+    .map-link{
+      display:block;border-radius:18px;overflow:hidden;
+      border:1px solid var(--border);text-decoration:none;position:relative
+    }
+    .map-link img{width:100%;height:320px;object-fit:cover;display:block;transition:opacity .2s}
+    .map-link:hover img{opacity:.85}
+    .map-overlay{
+      position:absolute;bottom:16px;left:16px;
+      background:#fff;border-radius:10px;padding:10px 16px;
+      box-shadow:0 4px 20px rgba(0,0,0,.12);font-size:.82rem;
+      display:flex;align-items:center;gap:8px;color:var(--navy);font-weight:600
+    }
+
+    /* ─── CONTACT FORM ─── */
+    .contact-form{background:var(--bg);border-radius:20px;padding:36px;border:1px solid var(--border)}
+    .contact-form h3{font-size:1.2rem;font-weight:700;color:var(--navy);margin-bottom:6px}
+    .contact-form p{font-size:.85rem;color:var(--muted);margin-bottom:24px}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .form-group{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+    .form-group label{font-size:.78rem;font-weight:600;color:var(--text)}
+    .form-group input,.form-group textarea,.form-group select{
+      padding:11px 14px;border-radius:9px;border:1.5px solid var(--border);
+      font-size:.9rem;font-family:inherit;color:var(--text);background:#fff;
+      transition:border-color .15s;outline:none
+    }
+    .form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:var(--blue)}
+    .form-group textarea{resize:vertical;min-height:100px}
+    .form-submit{width:100%;background:var(--blue);color:#fff;padding:13px;border:none;border-radius:9px;font-size:.95rem;font-weight:700;cursor:pointer;transition:background .15s;font-family:inherit}
+    .form-submit:hover{background:#1d4ed8}
+
+    /* ─── ANIMATIONS ─── */
+
+    /* Pulsing pill dot */
+    .pill::before{animation:pulse-dot 2s ease-in-out infinite}
+    @keyframes pulse-dot{
+      0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(96,165,250,.5)}
+      50%{transform:scale(1.4);box-shadow:0 0 0 6px rgba(96,165,250,0)}
+    }
+
+    /* Hero gradient shift */
+    .hero-left{
+      background:linear-gradient(135deg,#0f172a 0%,#16254a 40%,#0d2240 70%,#0f172a 100%);
+      background-size:300% 300%;
+      animation:bg-shift 10s ease infinite
+    }
+    @keyframes bg-shift{
+      0%{background-position:0% 0%}
+      50%{background-position:100% 100%}
+      100%{background-position:0% 0%}
+    }
+
+    /* Hero content entrance */
+    .hero-left>*{opacity:0;transform:translateX(-24px);animation:slide-in .7s ease forwards}
+    .hero-left .pill{animation-delay:.1s}
+    .hero-left h1{animation-delay:.3s}
+    .hero-left p{animation-delay:.5s}
+    .hero-left .hero-btns{animation-delay:.65s}
+    .hero-left .trust{animation-delay:.8s}
+    @keyframes slide-in{to{opacity:1;transform:translateX(0)}}
+
+    /* Hero right image slow zoom */
+    .hero-right img{animation:slow-zoom 14s ease-in-out infinite alternate}
+    @keyframes slow-zoom{from{transform:scale(1)}to{transform:scale(1.06)}}
+
+    /* Floating card bounce */
+    .hero-float{animation:card-float 4s ease-in-out infinite}
+    @keyframes card-float{
+      0%,100%{transform:translateY(0) rotate(0deg)}
+      40%{transform:translateY(-12px) rotate(.4deg)}
+      70%{transform:translateY(-6px) rotate(-.2deg)}
+    }
+
+    /* CTA pulse ring */
+    .nav-cta{animation:cta-ring 3s ease-in-out infinite}
+    @keyframes cta-ring{
+      0%,100%{box-shadow:0 0 0 0 rgba(37,99,235,.45)}
+      50%{box-shadow:0 0 0 9px rgba(37,99,235,0)}
+    }
+
+    /* Nav underline sweep */
+    nav a:not(.nav-login):not(.nav-cta){position:relative}
+    nav a:not(.nav-login):not(.nav-cta)::after{
+      content:'';position:absolute;bottom:-2px;left:0;
+      width:0;height:1.5px;background:var(--blue);transition:width .25s ease
+    }
+    nav a:not(.nav-login):not(.nav-cta):hover::after{width:100%}
+
+    /* Logo marquee */
+    .logos-row{display:flex;flex-wrap:nowrap!important;overflow:hidden;justify-content:flex-start!important;gap:0!important}
+    .logos-inner{display:flex;gap:48px;flex-shrink:0;min-width:max-content;padding-right:48px;animation:marquee 22s linear infinite;will-change:transform}
+    .logos-inner .logo-badge{flex-shrink:0}
+    @keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+    .logos-row:hover .logos-inner{animation-play-state:paused}
+
+    /* Scroll reveal */
+    .reveal{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s ease}
+    .reveal.visible{opacity:1;transform:translateY(0)}
+    .reveal-d1{transition-delay:.1s}
+    .reveal-d2{transition-delay:.2s}
+    .reveal-d3{transition-delay:.3s}
+    .reveal-d4{transition-delay:.4s}
+    .reveal-d5{transition-delay:.5s}
+
+    /* Step number hover pop */
+    .step-num{transition:transform .25s ease,box-shadow .25s ease}
+    .step:hover .step-num{transform:scale(1.15);box-shadow:0 0 0 7px rgba(37,99,235,.18)}
+
+    /* Service card shimmer sweep */
+    .svc{position:relative;overflow:hidden}
+    .svc::after{
+      content:'';position:absolute;inset:0;
+      background:linear-gradient(105deg,transparent 30%,rgba(37,99,235,.07) 50%,transparent 70%);
+      transform:translateX(-100%);transition:transform .55s ease
+    }
+    .svc:hover::after{transform:translateX(100%)}
+
+    /* Stats rotating glow */
+    .stats-section{position:relative;overflow:hidden}
+    .stats-section::before{
+      content:'';position:absolute;top:-50%;left:-50%;
+      width:200%;height:200%;
+      background:radial-gradient(circle,rgba(255,255,255,.04) 0%,transparent 55%);
+      animation:glow-rotate 9s linear infinite
+    }
+    @keyframes glow-rotate{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+
+    /* Testimonial quote ghost */
+    .testi{position:relative;overflow:hidden}
+    .testi::before{
+      content:'\201C';position:absolute;top:-18px;right:18px;
+      font-size:9rem;color:rgba(255,255,255,.04);
+      font-family:Georgia,serif;line-height:1;pointer-events:none
+    }
+
+/* ─── FOOTER ─── */
+    footer{background:var(--navy);color:rgba(255,255,255,.5);padding:60px 8% 32px}
+    .footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:48px}
+    .footer-brand p{font-size:.85rem;line-height:1.7;color:rgba(255,255,255,.45);margin-top:14px;max-width:280px}
+    .footer-col h4{font-size:.82rem;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:16px}
+    .footer-col a{display:block;color:rgba(255,255,255,.55);text-decoration:none;font-size:.85rem;margin-bottom:10px;transition:color .15s}
+    .footer-col a:hover{color:#fff}
+    .footer-bottom{border-top:1px solid rgba(255,255,255,.08);padding-top:24px;display:flex;justify-content:space-between;align-items:center;font-size:.78rem}
+    .footer-bottom strong{color:rgba(255,255,255,.7)}
+  </style>
+</head>
+<body>
+
+<!-- ─── HEADER ─── -->
+<header>
+  <a class="logo" href="index.html">
+    <div class="logo-mark">AW</div>
+    <span class="logo-text">Admin<em>Works</em></span>
+  </a>
+  <nav>
+    <a href="#services">Services</a>
+    <a href="results.html">Current Results</a>
+    <a href="#about">About</a>
+    <a href="#team">Team</a>
+    <a href="#contact">Contact</a>
+    <a href="login.html" class="nav-login">Log In</a>
+    <a href="#contact" class="nav-cta">Get a Quote</a>
+  </nav>
+</header>
+
+<!-- ─── HERO ─── -->
+<section class="hero">
+  <div class="hero-left">
+    <span class="pill">Outsourcing &amp; Admin Services</span>
+    <h1>We handle<br>the work<br>you <mark>shouldn't</mark></h1>
+    <p>From inbox zero to invoicing, our dedicated team takes over your back-office headaches — so you get your day back and your business moves faster.</p>
+    <div class="hero-btns">
+      <a href="#services" class="btn-white">See What We Do</a>
+      <a href="#contact" class="btn-ghost">Book a Free Call</a>
+    </div>
+    <div class="trust">
+      <div class="t-avatars">
+        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&q=80" alt="">
+        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&q=80" alt="">
+        <img src="https://images.unsplash.com/photo-1546961342-ea5f62d4064b?w=80&q=80" alt="">
+        <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=80&q=80" alt="">
+      </div>
+      <div class="t-text"><strong>500+ happy clients</strong>trust us with their operations</div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1000&q=85" alt="Team collaborating">
+    <div class="hero-float">
+      <div class="float-icon">📋</div>
+      <div>
+        <div class="float-lbl">Tasks completed today</div>
+        <div class="float-val">1,248 tasks</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── LOGOS ─── -->
+<div class="logos-strip">
+  <p>Trusted by teams at</p>
+  <div class="logos-row">
+    <span class="logo-badge">Meridian Group</span>
+    <span class="logo-badge">Crestfield</span>
+    <span class="logo-badge">Vantara Co.</span>
+    <span class="logo-badge">Halcyon Labs</span>
+    <span class="logo-badge">Norden Partners</span>
+  </div>
+</div>
+
+<!-- ─── HOW IT WORKS ─── -->
+<section class="sec" id="about">
+  <div class="sec-tag">How it works</div>
+  <h2>Up and running in 3 steps</h2>
+  <p class="lead">No long onboarding. No complicated contracts. We get to work fast — usually within 48 hours of your first call.</p>
+  <div class="steps">
+    <div class="step reveal reveal-d1">
+      <div class="step-num">1</div>
+      <h3>Tell us what you need</h3>
+      <p>Book a free 30-minute call. We listen, ask the right questions, and figure out exactly where you're losing time.</p>
+    </div>
+    <div class="step reveal reveal-d2">
+      <div class="step-num">2</div>
+      <h3>We match your team</h3>
+      <p>We assign a dedicated specialist (or a small team) who fits your industry, tools, and working style.</p>
+    </div>
+    <div class="step reveal reveal-d3">
+      <div class="step-num">3</div>
+      <h3>Hand off &amp; breathe</h3>
+      <p>Your tasks are handled. You get weekly updates, a direct line to your team, and time back in your day.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ─── SERVICES ─── -->
+<section class="sec sec-alt" id="services">
+  <div class="sec-tag">What we take off your plate</div>
+  <h2>Services built around your workflow</h2>
+  <p class="lead">We cover the full spectrum of back-office and operational tasks — no job too routine, no process too messy.</p>
+  <div class="services-grid">
+    <div class="svc reveal reveal-d1"><div class="svc-icon">📬</div><h3>Email &amp; Calendar Management</h3><p>We triage your inbox, schedule meetings, and keep your calendar sane. No more drowning in CC chains.</p></div>
+    <div class="svc reveal reveal-d2"><div class="svc-icon">🧾</div><h3>Invoicing &amp; Billing</h3><p>From issuing invoices to chasing payments, we keep your cash flow moving without the awkward follow-ups.</p></div>
+    <div class="svc reveal reveal-d3"><div class="svc-icon">🗂️</div><h3>Data Entry &amp; CRM Updates</h3><p>Your database is only useful if it's accurate. We keep records clean, updated, and ready to use.</p></div>
+    <div class="svc reveal reveal-d2"><div class="svc-icon">🎧</div><h3>Customer Support</h3><p>Real, friendly responses to your customers — not copy-paste scripts. We represent you the way you'd want.</p></div>
+    <div class="svc reveal reveal-d3"><div class="svc-icon">📊</div><h3>Reporting &amp; Analysis</h3><p>Weekly snapshots, monthly reports, KPI dashboards — in the format that actually works for your team.</p></div>
+    <div class="svc reveal reveal-d4"><div class="svc-icon">🔁</div><h3>Process Automation</h3><p>We map your repetitive workflows and set up automations so things run even when no one's watching.</p></div>
+  </div>
+</section>
+
+<!-- ─── TEAM ─── -->
+<section class="sec" id="team">
+  <div class="sec-tag">The people behind the work</div>
+  <h2>Real humans, not bots</h2>
+  <p class="lead">Every task is handled by a dedicated team member who knows your business. No ticket queues, no chatbots — just people who care.</p>
+  <div class="team-grid">
+    <div class="team-card reveal reveal-d1">
+      <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=400&q=85" alt="Sarah">
+      <div class="team-info"><div class="team-name">Sarah M.</div><div class="team-role">Operations Lead</div></div>
+    </div>
+    <div class="team-card reveal reveal-d2">
+      <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=85" alt="James">
+      <div class="team-info"><div class="team-name">James T.</div><div class="team-role">Client Relations</div></div>
+    </div>
+    <div class="team-card reveal reveal-d3">
+      <img src="https://images.unsplash.com/photo-1551836022-deb4988cc6c0?w=400&q=85" alt="Priya">
+      <div class="team-info"><div class="team-name">Priya K.</div><div class="team-role">Finance &amp; Admin</div></div>
+    </div>
+    <div class="team-card reveal reveal-d4">
+      <img src="https://images.unsplash.com/photo-1545167622-3a6ac756afa4?w=400&q=85" alt="Marcus">
+      <div class="team-info"><div class="team-name">Marcus R.</div><div class="team-role">Process Specialist</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── STATS ─── -->
+<div class="stats-section">
+  <div class="stats-grid">
+    <div class="reveal reveal-d1"><div class="stat-num" data-target="500" data-suffix="+">500+</div><div class="stat-lbl">Clients Worldwide</div></div>
+    <div class="reveal reveal-d2"><div class="stat-num" data-target="15" data-suffix="+">15+</div><div class="stat-lbl">Years of Experience</div></div>
+    <div class="reveal reveal-d3"><div class="stat-num" data-target="98" data-suffix="%">98%</div><div class="stat-lbl">Client Retention Rate</div></div>
+    <div class="reveal reveal-d4"><div class="stat-num">24/7</div><div class="stat-lbl">Support Coverage</div></div>
+  </div>
+</div>
+
+<!-- ─── OFFICE PHOTOS ─── -->
+<section class="sec" style="padding-bottom:0">
+  <div class="sec-tag">Life at AdminWorks</div>
+  <h2>Where the work happens</h2>
+  <p class="lead">Our London office is where strategy meets execution — a space built for focus, collaboration, and the occasional good coffee.</p>
+</section>
+<div style="padding:0 8% 88px">
+  <div class="office-grid">
+    <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=900&q=85" alt="Office space">
+    <img src="https://images.unsplash.com/photo-1600880292089-90a7e086ee0c?w=500&q=85" alt="Team meeting">
+    <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=500&q=85" alt="Working together">
+    <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=500&q=85" alt="Office collaboration">
+    <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=500&q=85" alt="Team discussion">
+  </div>
+</div>
+
+<!-- ─── TESTIMONIALS ─── -->
+<section class="sec sec-alt">
+  <div class="sec-tag">Don't take our word for it</div>
+  <h2>What clients actually say</h2>
+  <p class="lead" style="margin-bottom:40px">Unfiltered feedback from business owners and ops teams who've handed us their chaos.</p>
+  <div class="testi-grid">
+    <div class="testi reveal reveal-d1">
+      <div class="stars">★★★★★</div>
+      <blockquote>"Honestly, I was skeptical. But within two weeks my inbox was under control for the first time in three years. Worth every penny."</blockquote>
+      <div class="testi-author">
+        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&q=80" alt="">
+        <div><div class="author-name">Claire B.</div><div class="author-title">Founder, Bloom Consulting</div></div>
+      </div>
+    </div>
+    <div class="testi reveal reveal-d2">
+      <div class="stars">★★★★★</div>
+      <blockquote>"We handed over invoicing and follow-ups. Recovered 12 hours a week. My team now focuses on actual work instead of admin chaos."</blockquote>
+      <div class="testi-author">
+        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&q=80" alt="">
+        <div><div class="author-name">Tom H.</div><div class="author-title">COO, Stackline Partners</div></div>
+      </div>
+    </div>
+    <div class="testi reveal reveal-d3">
+      <div class="stars">★★★★★</div>
+      <blockquote>"They feel like part of our company, not a vendor. They push back when something doesn't make sense — that's rare."</blockquote>
+      <div class="testi-author">
+        <img src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=100&q=80" alt="">
+        <div><div class="author-name">Nina R.</div><div class="author-title">Director of Ops, Greyfield Studio</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CONTACT ─── -->
+<section class="sec" id="contact">
+  <div class="sec-tag">Get in touch</div>
+  <h2>Let's talk about your operations</h2>
+  <p class="lead">Whether you have a clear picture or just a vague sense that things could run better — we're a good starting point.</p>
+  <div class="contact-wrapper">
+    <div>
+      <div class="contact-info" style="margin-bottom:36px">
+        <div class="contact-item">
+          <div class="c-icon">📍</div>
+          <div>
+            <div class="c-label">Office Address</div>
+            <a class="c-val" href="https://www.google.com/maps/search/Calea+Serban+Voda+133+Central+Business+Park+Bucharest" target="_blank" rel="noopener">
+              Calea Șerban Vodă 133, Central Business Park<br>Bucharest, Romania
+            </a>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="c-icon">📞</div>
+          <div>
+            <div class="c-label">Phone</div>
+            <a class="c-val" href="tel:+442079460823">+44 20 7946 0823</a>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="c-icon">✉️</div>
+          <div>
+            <div class="c-label">Email</div>
+            <a class="c-val" href="mailto:adminworks@netconnect.com.cy">adminworks@netconnect.com.cy</a>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="c-icon">🕐</div>
+          <div>
+            <div class="c-label">Working Hours</div>
+            <span class="c-val" style="cursor:default">Mon–Fri, 8:00 AM – 7:00 PM GMT</span>
+          </div>
+        </div>
+      </div>
+      <!-- Map preview linking to Google Maps -->
+      <a class="map-link" href="https://www.google.com/maps/search/Calea+Serban+Voda+133+Central+Business+Park+Bucharest" target="_blank" rel="noopener">
+        <img src="https://images.unsplash.com/photo-1584646098378-0874589d76b1?q=80&w=735&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Bucharest">
+        <div class="map-overlay">📍 View on Google Maps →</div>
+      </a>
+    </div>
+    <div class="contact-form">
+      <h3>Send us a message</h3>
+      <p>We usually respond within a few hours on business days.</p>
+      <div class="form-row">
+        <div class="form-group"><label>First Name</label><input type="text" placeholder="Jane"></div>
+        <div class="form-group"><label>Last Name</label><input type="text" placeholder="Smith"></div>
+      </div>
+      <div class="form-group"><label>Work Email</label><input type="email" placeholder="jane@company.com"></div>
+      <div class="form-group"><label>Company</label><input type="text" placeholder="Your company name"></div>
+      <div class="form-group">
+        <label>What do you need help with?</label>
+        <select>
+          <option value="">Select a service...</option>
+          <option>Email &amp; Calendar Management</option>
+          <option>Invoicing &amp; Billing</option>
+          <option>Customer Support</option>
+          <option>Data Entry &amp; CRM</option>
+          <option>Reporting &amp; Analysis</option>
+          <option>Process Automation</option>
+          <option>Something else</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Message</label><textarea placeholder="Tell us a bit about your situation..."></textarea></div>
+      <button class="form-submit">Send Message</button>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <a class="logo" href="index.html" style="margin-bottom:2px">
+        <div class="logo-mark">AW</div>
+        <span class="logo-text" style="color:#fff">Admin<em>Works</em></span>
+      </a>
+      <p>We help businesses reclaim time by handling the operational work that slows them down. Based in London, working globally.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <a href="#">Email Management</a>
+      <a href="#">Invoicing</a>
+      <a href="#">Customer Support</a>
+      <a href="#">Data Entry</a>
+      <a href="#">Reporting</a>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <a href="#">About Us</a>
+      <a href="#">Our Team</a>
+      <a href="#">Case Studies</a>
+      <a href="#">Blog</a>
+      <a href="#">Careers</a>
+    </div>
+    <div class="footer-col">
+      <h4>Legal &amp; Support</h4>
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
+      <a href="#">GDPR</a>
+      <a href="login.html">Client Login</a>
+      <a href="#">Help Centre</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2024 <strong>AdminWorks Ltd.</strong> Registered in Romania</span>
+    <span>Calea Șerban Vodă 133, Central Business Park, Bucharest, Romania</span>
+  </div>
+</footer>
+
+<script>
+// ── Scroll reveal ──────────────────────────────────────────────
+const revealObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); } });
+}, { threshold: 0.13 });
+document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+// ── Animated stat counters ─────────────────────────────────────
+function countUp(el, target, suffix, duration) {
+  let start = null;
+  const step = ts => {
+    if (!start) start = ts;
+    const p = Math.min((ts - start) / duration, 1);
+    const ease = 1 - Math.pow(1 - p, 3);
+    el.textContent = Math.floor(ease * target) + suffix;
+    if (p < 1) requestAnimationFrame(step);
+    else el.textContent = target + suffix;
+  };
+  requestAnimationFrame(step);
+}
+const statObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    const el = e.target;
+    const target = +el.dataset.target;
+    const suffix = el.dataset.suffix || '';
+    if (target) countUp(el, target, suffix, 1800);
+    statObs.unobserve(el);
+  });
+}, { threshold: 0.5 });
+document.querySelectorAll('.stat-num[data-target]').forEach(el => statObs.observe(el));
+
+// ── Logos marquee: duplicate items for seamless loop ───────────
+const logosRow = document.querySelector('.logos-row');
+if (logosRow) {
+  const items = Array.from(logosRow.children);
+  const inner1 = document.createElement('div');
+  inner1.className = 'logos-inner';
+  const inner2 = document.createElement('div');
+  inner2.className = 'logos-inner';
+  inner2.setAttribute('aria-hidden', 'true');
+  items.forEach(item => {
+    inner1.appendChild(item);
+    inner2.appendChild(item.cloneNode(true));
+  });
+  logosRow.appendChild(inner1);
+  logosRow.appendChild(inner2);
+}
+
+// ── Hero float card: live task counter ────────────────────────
+const floatVal = document.querySelector('.float-val');
+if (floatVal) {
+  let base = 1248;
+  setInterval(() => {
+    base += Math.floor(Math.random() * 3) + 1;
+    floatVal.textContent = base.toLocaleString() + ' tasks';
+  }, 3200);
+}
+</script>
+</body>
+</html>
