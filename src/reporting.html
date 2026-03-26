@@ -24,7 +24,8 @@
     border-bottom:1px solid var(--border);
   }
   .logo{display:flex;align-items:center;text-decoration:none;background:linear-gradient(rgba(37,99,235,.2),rgba(37,99,235,.2)),#0f172a;border:1px solid rgba(96,165,250,.35);border-radius:9999px;padding:6px 16px;box-shadow:0 8px 32px rgba(0,0,0,.2)}
-  .logo img{height:20px;width:auto;display:block}
+  .logo img{height:20px;width:auto;display:block;transition:transform .6s cubic-bezier(.4,0,.2,1)}
+    .logo:hover img{transform:rotate(180deg)}
   
   
   nav{display:flex;gap:30px;align-items:center}
