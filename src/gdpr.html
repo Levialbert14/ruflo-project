@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GDPR & Data Privacy — AdminWorks</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --navy:#0f172a;--blue:#2563eb;--blue-light:#dbeafe;
+    --text:#1e293b;--muted:#64748b;--border:#e2e8f0;--bg:#f8fafc;
+  }
+  html{scroll-behavior:smooth}
+  body{font-family:'Segoe UI',system-ui,sans-serif;color:var(--text);background:#fff;overflow-x:hidden}
+
+  /* ─── HEADER ─── */
+  header{
+    position:sticky;top:0;z-index:200;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:0 6%;height:70px;
+    background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--border);
+  }
+  .logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+  .logo-mark{width:36px;height:36px;background:var(--blue);border-radius:8px;display:grid;place-items:center;color:#fff;font-weight:900;font-size:13px}
+  .logo-text{font-weight:800;font-size:1.1rem;color:var(--navy)}
+  .logo-text em{font-style:normal;color:var(--blue)}
+  nav{display:flex;gap:30px;align-items:center}
+  nav a{color:var(--muted);text-decoration:none;font-size:.87rem;font-weight:500;transition:color .15s}
+  nav a:hover{color:var(--navy)}
+  .nav-login{border:1.5px solid var(--border);color:var(--navy)!important;padding:7px 18px;border-radius:8px;font-weight:600!important}
+  .nav-login:hover{border-color:var(--blue)!important;color:var(--blue)!important}
+  .nav-cta{background:#000;color:#fff!important;padding:9px 20px;border-radius:8px;font-weight:600!important;animation:cta-ring 3s ease-in-out infinite}
+  .nav-cta:hover{background:#222}
+  @keyframes cta-ring{
+    0%,100%{box-shadow:0 0 0 0 rgba(37,99,235,.45)}
+    50%{box-shadow:0 0 0 9px rgba(37,99,235,0)}
+  }
+  nav a:not(.nav-login):not(.nav-cta){position:relative}
+  nav a:not(.nav-login):not(.nav-cta)::after{
+    content:'';position:absolute;bottom:-2px;left:0;
+    width:0;height:1.5px;background:var(--blue);transition:width .25s ease
+  }
+  nav a:not(.nav-login):not(.nav-cta):hover::after{width:100%}
+
+  /* ─── PAGE HERO ─── */
+  .page-hero{
+    background:linear-gradient(135deg,#0f172a 0%,#16254a 40%,#0d2240 70%,#0f172a 100%);
+    background-size:300% 300%;
+    animation:bg-shift 10s ease infinite;
+    padding:80px 8% 72px;color:#fff;
+  }
+  @keyframes bg-shift{
+    0%{background-position:0% 0%}
+    50%{background-position:100% 100%}
+    100%{background-position:0% 0%}
+  }
+  .pill{
+    display:inline-flex;align-items:center;gap:7px;
+    background:rgba(37,99,235,.2);border:1px solid rgba(96,165,250,.35);
+    color:#93c5fd;font-size:.72rem;font-weight:700;letter-spacing:1.3px;
+    text-transform:uppercase;padding:5px 13px;border-radius:100px;
+    margin-bottom:26px;width:fit-content
+  }
+  .pill::before{content:'';width:7px;height:7px;background:#60a5fa;border-radius:50%;animation:pulse-dot 2s ease-in-out infinite}
+  @keyframes pulse-dot{
+    0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(96,165,250,.5)}
+    50%{transform:scale(1.4);box-shadow:0 0 0 6px rgba(96,165,250,0)}
+  }
+  .page-hero h1{font-size:clamp(2rem,3.2vw,3rem);font-weight:800;line-height:1.1;letter-spacing:-1.5px;margin-bottom:18px}
+  .page-hero h1 mark{background:none;color:#60a5fa}
+  .page-hero p{color:rgba(255,255,255,.65);font-size:1rem;line-height:1.75;max-width:560px}
+  .hero-meta{margin-top:28px;display:flex;gap:24px;flex-wrap:wrap}
+  .hero-meta span{font-size:.78rem;color:rgba(255,255,255,.45);display:flex;align-items:center;gap:6px}
+  .hero-meta span strong{color:rgba(255,255,255,.75)}
+
+  /* ─── LAYOUT ─── */
+  .content-wrap{display:grid;grid-template-columns:240px 1fr;gap:56px;padding:72px 8%;align-items:start}
+
+  /* ─── STICKY TOC ─── */
+  .toc{position:sticky;top:90px}
+  .toc h4{font-size:.72rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
+  .toc a{
+    display:block;font-size:.82rem;color:var(--muted);text-decoration:none;
+    padding:7px 12px;border-radius:7px;margin-bottom:2px;
+    border-left:2px solid transparent;transition:color .15s,background .15s,border-color .15s;
+  }
+  .toc a:hover{color:var(--navy);background:var(--bg)}
+  .toc a.active{color:var(--blue);font-weight:600;border-left-color:var(--blue);background:var(--blue-light)}
+
+  /* ─── ARTICLE BODY ─── */
+  .gdpr-body{max-width:720px}
+  .gdpr-section{margin-bottom:60px;scroll-margin-top:100px}
+  .gdpr-section h2{
+    font-size:1.25rem;font-weight:800;color:var(--navy);
+    margin-bottom:16px;padding-bottom:12px;
+    border-bottom:2px solid var(--border);
+    display:flex;align-items:center;gap:10px;
+  }
+  .gdpr-section h2 .s-num{
+    width:28px;height:28px;border-radius:8px;background:var(--blue);
+    color:#fff;font-size:.78rem;font-weight:800;
+    display:grid;place-items:center;flex-shrink:0;
+  }
+  .gdpr-section p{font-size:.93rem;color:var(--text);line-height:1.85;margin-bottom:14px}
+  .gdpr-section p:last-child{margin-bottom:0}
+  .gdpr-section ul,.gdpr-section ol{padding-left:20px;margin-bottom:14px}
+  .gdpr-section li{font-size:.93rem;color:var(--text);line-height:1.8;margin-bottom:6px}
+  .gdpr-section strong{color:var(--navy)}
+  .gdpr-section a{color:var(--blue);text-decoration:none;font-weight:500}
+  .gdpr-section a:hover{text-decoration:underline}
+
+  /* info box */
+  .info-box{
+    background:var(--blue-light);border-left:4px solid var(--blue);
+    border-radius:0 10px 10px 0;padding:16px 20px;margin:20px 0;
+  }
+  .info-box p{color:#1e3a8a;margin-bottom:0;font-size:.88rem}
+
+  /* rights grid */
+  .rights-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:20px 0}
+  .right-card{
+    background:var(--bg);border:1px solid var(--border);border-radius:12px;
+    padding:18px;
+  }
+  .right-card h4{font-size:.88rem;font-weight:700;color:var(--navy);margin-bottom:6px;display:flex;align-items:center;gap:8px}
+  .right-card p{font-size:.82rem;color:var(--muted);line-height:1.65;margin-bottom:0}
+
+  /* ─── SCROLL REVEAL ─── */
+  .reveal{opacity:0;transform:translateY(20px);transition:opacity .5s ease,transform .5s ease}
+  .reveal.visible{opacity:1;transform:translateY(0)}
+
+  /* ─── FOOTER ─── */
+  footer{background:var(--navy);color:rgba(255,255,255,.5);padding:60px 8% 32px}
+  .footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:48px}
+  .footer-brand p{font-size:.85rem;line-height:1.7;color:rgba(255,255,255,.45);margin-top:14px;max-width:280px}
+  .footer-col h4{font-size:.82rem;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:16px}
+  .footer-col a{display:block;color:rgba(255,255,255,.55);text-decoration:none;font-size:.85rem;margin-bottom:10px;transition:color .15s}
+  .footer-col a:hover{color:#fff}
+  .footer-bottom{border-top:1px solid rgba(255,255,255,.08);padding-top:24px;display:flex;justify-content:space-between;align-items:center;font-size:.78rem}
+  .footer-bottom strong{color:rgba(255,255,255,.7)}
+</style>
+</head>
+<body>
+
+<!-- ─── HEADER ─── -->
+<header>
+  <a class="logo" href="index.html">
+    <div class="logo-mark">AW</div>
+    <span class="logo-text">Admin<em>Works</em></span>
+  </a>
+  <nav>
+    <a href="index.html#services">Services</a>
+    <a href="results.html">Current Results</a>
+    <a href="index.html#about">About</a>
+    <a href="index.html#team">Team</a>
+    <a href="index.html#contact">Contact</a>
+    <a href="login.html" class="nav-login">Log In</a>
+    <a href="index.html#contact" class="nav-cta">Get a Quote</a>
+  </nav>
+</header>
+
+<!-- ─── PAGE HERO ─── -->
+<div class="page-hero">
+  <span class="pill">Data &amp; Privacy</span>
+  <h1>GDPR &amp; <mark>Data Privacy</mark></h1>
+  <p>How AdminWorks collects, uses, and protects your personal data — in full compliance with the General Data Protection Regulation (EU) 2016/679 and its applicable national implementations.</p>
+  <div class="hero-meta">
+    <span>📅 <strong>Last updated: 26 March 2026</strong></span>
+    <span>⚖️ <strong>Regulation: EU GDPR 2016/679</strong></span>
+    <span>🏛️ <strong>Supervisory Authority: ANSPDCP (Romania)</strong></span>
+  </div>
+</div>
+
+<!-- ─── CONTENT ─── -->
+<div class="content-wrap">
+
+  <!-- TABLE OF CONTENTS -->
+  <nav class="toc" id="toc">
+    <h4>On this page</h4>
+    <a href="#s1" class="active">1. Who We Are</a>
+    <a href="#s2">2. Legal Framework</a>
+    <a href="#s3">3. Data We Collect</a>
+    <a href="#s4">4. Legal Basis</a>
+    <a href="#s5">5. How We Use Your Data</a>
+    <a href="#s6">6. Your Rights</a>
+    <a href="#s7">7. Data Retention</a>
+    <a href="#s8">8. International Transfers</a>
+    <a href="#s9">9. Third-Party Processors</a>
+    <a href="#s10">10. Cookies</a>
+    <a href="#s11">11. Data Breaches</a>
+    <a href="#s12">12. Contact &amp; Complaints</a>
+  </nav>
+
+  <!-- BODY -->
+  <article class="gdpr-body">
+
+    <div class="gdpr-section reveal" id="s1">
+      <h2><span class="s-num">1</span>Who We Are</h2>
+      <p><strong>AdminWorks Ltd.</strong> ("AdminWorks", "we", "us", "our") is a company registered in Romania, operating from Calea Șerban Vodă 133, Central Business Park, Bucharest. We provide outsourced administrative and back-office services to businesses across the European Union and internationally.</p>
+      <p>For the purposes of GDPR, AdminWorks acts as both a <strong>Data Controller</strong> (when processing data about website visitors, prospects, and our own employees) and a <strong>Data Processor</strong> (when handling personal data on behalf of client businesses as part of service delivery).</p>
+      <p>Data Protection contact: <a href="mailto:dpo@adminworks.eu">dpo@adminworks.eu</a></p>
+    </div>
+
+    <div class="gdpr-section reveal" id="s2">
+      <h2><span class="s-num">2</span>Legal Framework</h2>
+      <p>This policy is governed by the following legislation and guidelines, all currently in force as of March 2026:</p>
+      <ul>
+        <li><strong>Regulation (EU) 2016/679</strong> — the General Data Protection Regulation (GDPR), in force since 25 May 2018</li>
+        <li><strong>Romanian Law No. 190/2018</strong> — national implementing measures for GDPR in Romania</li>
+        <li><strong>ePrivacy Directive 2002/58/EC</strong> (as amended) — governing electronic communications and cookies</li>
+        <li><strong>EDPB Guidelines</strong> — binding guidelines issued by the European Data Protection Board, including the latest guidelines on consent (05/2020), data transfers (05/2021), and legitimate interests (01/2024)</li>
+        <li><strong>EU-US Data Privacy Framework</strong> (effective July 2023) — replacing the invalidated Privacy Shield for transatlantic data transfers</li>
+      </ul>
+      <div class="info-box">
+        <p>📌 <strong>Note:</strong> The EU AI Act (Regulation (EU) 2024/1689), which came into full application in February 2025, imposes additional transparency obligations where AI-assisted processing affects individuals. AdminWorks complies with all applicable provisions of the AI Act in its use of automated tools.</p>
+      </div>
+    </div>
+
+    <div class="gdpr-section reveal" id="s3">
+      <h2><span class="s-num">3</span>Data We Collect</h2>
+      <p>We collect and process the following categories of personal data:</p>
+      <p><strong>From website visitors and enquiries:</strong></p>
+      <ul>
+        <li>Name, work email address, company name, and phone number (submitted via contact forms)</li>
+        <li>IP address, browser type, device type, and browsing behaviour (collected via cookies and server logs)</li>
+        <li>Communication records — emails and messages sent to us</li>
+      </ul>
+      <p><strong>From clients and their authorised users:</strong></p>
+      <ul>
+        <li>Account credentials and login identifiers</li>
+        <li>Billing and invoicing information (name, address, VAT number)</li>
+        <li>Task instructions, business documents, and any personal data contained within delegated work</li>
+      </ul>
+      <p><strong>We do not collect:</strong> special categories of data (health, biometric, political opinions, etc.) unless explicitly required by a specific client engagement and covered by a separate Data Processing Agreement (DPA).</p>
+    </div>
+
+    <div class="gdpr-section reveal" id="s4">
+      <h2><span class="s-num">4</span>Legal Basis for Processing</h2>
+      <p>Under Article 6 GDPR, we rely on the following legal bases:</p>
+      <ul>
+        <li><strong>Contract (Art. 6(1)(b)):</strong> Processing necessary to perform our services under a client contract or to take steps prior to entering into one.</li>
+        <li><strong>Legitimate interests (Art. 6(1)(f)):</strong> Processing for business development, fraud prevention, IT security, and service improvement — where our interests are not overridden by your rights (assessed via a Legitimate Interest Assessment).</li>
+        <li><strong>Legal obligation (Art. 6(1)(c)):</strong> Processing required to comply with Romanian and EU law, including tax, accounting, and anti-money laundering obligations.</li>
+        <li><strong>Consent (Art. 6(1)(a)):</strong> Where required — specifically for non-essential cookies and marketing communications. Consent is freely given, specific, informed, and unambiguous. You may withdraw it at any time.</li>
+      </ul>
+    </div>
+
+    <div class="gdpr-section reveal" id="s5">
+      <h2><span class="s-num">5</span>How We Use Your Data</h2>
+      <p>Personal data is used for the following purposes:</p>
+      <ul>
+        <li>Delivering contracted services and communicating about ongoing tasks</li>
+        <li>Managing client accounts, billing, and invoicing</li>
+        <li>Responding to enquiries and booking consultations</li>
+        <li>Sending service updates and operational notifications</li>
+        <li>Marketing communications (only where you have opted in or where the soft opt-in rule under ePrivacy applies to existing clients)</li>
+        <li>Improving our website and services through aggregated analytics</li>
+        <li>Complying with legal and regulatory obligations</li>
+      </ul>
+      <p>We do not sell, rent, or trade personal data with third parties for their own marketing purposes.</p>
+    </div>
+
+    <div class="gdpr-section reveal" id="s6">
+      <h2><span class="s-num">6</span>Your Rights Under GDPR</h2>
+      <p>As a data subject under GDPR (Articles 15–22), you have the following rights. All requests are handled within <strong>30 days</strong>, free of charge.</p>
+      <div class="rights-grid">
+        <div class="right-card">
+          <h4>📋 Right of Access (Art. 15)</h4>
+          <p>Request a copy of all personal data we hold about you, along with details of how it is processed.</p>
+        </div>
+        <div class="right-card">
+          <h4>✏️ Right to Rectification (Art. 16)</h4>
+          <p>Ask us to correct inaccurate or incomplete personal data without undue delay.</p>
+        </div>
+        <div class="right-card">
+          <h4>🗑️ Right to Erasure (Art. 17)</h4>
+          <p>Request deletion of your data where there is no longer a lawful reason for us to hold it ("right to be forgotten").</p>
+        </div>
+        <div class="right-card">
+          <h4>⏸️ Right to Restriction (Art. 18)</h4>
+          <p>Ask us to pause processing of your data while accuracy or legitimate grounds are being assessed.</p>
+        </div>
+        <div class="right-card">
+          <h4>📦 Right to Portability (Art. 20)</h4>
+          <p>Receive your data in a structured, machine-readable format to transfer to another provider.</p>
+        </div>
+        <div class="right-card">
+          <h4>🚫 Right to Object (Art. 21)</h4>
+          <p>Object to processing based on legitimate interests or for direct marketing purposes at any time.</p>
+        </div>
+        <div class="right-card">
+          <h4>🤖 Rights re. Automated Decisions (Art. 22)</h4>
+          <p>Not to be subject to solely automated decisions that produce significant legal or similar effects.</p>
+        </div>
+        <div class="right-card">
+          <h4>↩️ Right to Withdraw Consent</h4>
+          <p>Where processing is based on consent, withdraw it at any time without affecting prior lawful processing.</p>
+        </div>
+      </div>
+      <p>To exercise any right, contact us at <a href="mailto:dpo@adminworks.eu">dpo@adminworks.eu</a>. We may ask you to verify your identity before processing the request.</p>
+    </div>
+
+    <div class="gdpr-section reveal" id="s7">
+      <h2><span class="s-num">7</span>Data Retention</h2>
+      <p>We retain personal data only for as long as necessary for the stated purpose or as required by law:</p>
+      <ul>
+        <li><strong>Client account data:</strong> retained for the duration of the contract plus 5 years, in line with Romanian commercial law requirements</li>
+        <li><strong>Invoicing and financial records:</strong> 10 years, as required by Romanian Fiscal Code</li>
+        <li><strong>Enquiry and contact form data:</strong> 24 months from last contact if no contract is entered</li>
+        <li><strong>Website analytics data:</strong> 14 months (aggregated and anonymised thereafter)</li>
+        <li><strong>Employee records:</strong> duration of employment plus 5 years</li>
+      </ul>
+      <p>When data is no longer required, it is securely deleted or anonymised in accordance with our Data Disposal Policy.</p>
+    </div>
+
+    <div class="gdpr-section reveal" id="s8">
+      <h2><span class="s-num">8</span>International Data Transfers</h2>
+      <p>AdminWorks is based in Romania, an EU member state. All data processed within the EU/EEA benefits from GDPR protection by default.</p>
+      <p>Where data is transferred outside the EEA, we ensure adequate safeguards are in place:</p>
+      <ul>
+        <li><strong>Adequacy decisions:</strong> Transfers to countries recognised by the European Commission as providing adequate protection (e.g. UK, Switzerland, Japan, South Korea)</li>
+        <li><strong>Standard Contractual Clauses (SCCs):</strong> The 2021 Commission-approved SCCs are used for all other third-country transfers, supplemented by a Transfer Impact Assessment where required</li>
+        <li><strong>EU-US Data Privacy Framework:</strong> For transfers to certified US recipients, in accordance with the adequacy decision of 10 July 2023</li>
+      </ul>
+    </div>
+
+    <div class="gdpr-section reveal" id="s9">
+      <h2><span class="s-num">9</span>Third-Party Processors</h2>
+      <p>We use a limited number of trusted sub-processors to deliver our services. All are bound by Data Processing Agreements and comply with GDPR:</p>
+      <ul>
+        <li><strong>Microsoft 365</strong> — email, document storage, and collaboration (EU data residency)</li>
+        <li><strong>Google Workspace</strong> — productivity and scheduling tools</li>
+        <li><strong>Stripe</strong> — payment processing (EU-US DPF certified)</li>
+        <li><strong>Cloudflare</strong> — CDN and DDoS protection (EU-US DPF certified)</li>
+        <li><strong>Plausible Analytics</strong> — privacy-first, cookie-free website analytics (EU-hosted)</li>
+      </ul>
+      <p>We do not use advertising networks or data brokers. Our full sub-processor list is available on request.</p>
+    </div>
+
+    <div class="gdpr-section reveal" id="s10">
+      <h2><span class="s-num">10</span>Cookies</h2>
+      <p>We use the following categories of cookies:</p>
+      <ul>
+        <li><strong>Strictly necessary:</strong> Required for the website to function (session management, security). No consent required under ePrivacy Directive.</li>
+        <li><strong>Analytics (optional):</strong> Privacy-first, cookieless analytics via Plausible — no personal identifiers are stored, no consent banner is required.</li>
+        <li><strong>Functional (optional):</strong> Remember your preferences (e.g. language). Require consent.</li>
+      </ul>
+      <p>We do not use third-party advertising or tracking cookies. You can manage preferences at any time via your browser settings or by contacting us.</p>
+    </div>
+
+    <div class="gdpr-section reveal" id="s11">
+      <h2><span class="s-num">11</span>Data Breach Procedures</h2>
+      <p>In the event of a personal data breach, AdminWorks will:</p>
+      <ul>
+        <li>Contain and assess the breach within <strong>24 hours</strong> of discovery</li>
+        <li>Notify the Romanian supervisory authority (<strong>ANSPDCP</strong>) within <strong>72 hours</strong>, as required by Article 33 GDPR, where the breach poses a risk to individuals</li>
+        <li>Notify affected data subjects <strong>without undue delay</strong> where there is a high risk to their rights and freedoms (Article 34 GDPR)</li>
+        <li>Document all breaches in our internal Data Breach Register, regardless of whether notification is required</li>
+      </ul>
+      <p>If you believe your data has been compromised, contact us immediately at <a href="mailto:security@adminworks.eu">security@adminworks.eu</a>.</p>
+    </div>
+
+    <div class="gdpr-section reveal" id="s12">
+      <h2><span class="s-num">12</span>Contact &amp; Complaints</h2>
+      <p>For any data protection queries, to exercise your rights, or to raise a concern:</p>
+      <ul>
+        <li><strong>Email:</strong> <a href="mailto:dpo@adminworks.eu">dpo@adminworks.eu</a></li>
+        <li><strong>Post:</strong> Data Protection Officer, AdminWorks Ltd., Calea Șerban Vodă 133, Central Business Park, Bucharest, Romania</li>
+      </ul>
+      <p>If you are not satisfied with our response, you have the right to lodge a complaint with the Romanian data protection authority:</p>
+      <ul>
+        <li><strong>ANSPDCP</strong> (Autoritatea Națională de Supraveghere a Prelucrării Datelor cu Caracter Personal)</li>
+        <li>Website: <a href="https://www.dataprotection.ro" target="_blank" rel="noopener">www.dataprotection.ro</a></li>
+        <li>Address: B-dul G-ral. Gheorghe Magheru 28–30, Bucharest, Romania</li>
+      </ul>
+      <p>You may also contact the supervisory authority in your EU country of habitual residence or place of work.</p>
+      <div class="info-box">
+        <p>📋 This policy was last reviewed and updated on <strong>26 March 2026</strong>. We review it at least annually and following any significant regulatory changes. Material updates will be communicated to active clients by email.</p>
+      </div>
+    </div>
+
+  </article>
+</div>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <a class="logo" href="index.html" style="margin-bottom:2px">
+        <div class="logo-mark">AW</div>
+        <span class="logo-text" style="color:#fff">Admin<em>Works</em></span>
+      </a>
+      <p>We help businesses reclaim time by handling the operational work that slows them down. Based in Romania, working globally.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <a href="#">Email Management</a>
+      <a href="#">Invoicing</a>
+      <a href="#">Customer Support</a>
+      <a href="#">Data Entry</a>
+      <a href="reporting.html">Reporting</a>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <a href="#">About Us</a>
+      <a href="#">Our Team</a>
+      <a href="results.html">Current Results</a>
+      <a href="#">Blog</a>
+      <a href="#">Careers</a>
+    </div>
+    <div class="footer-col">
+      <h4>Legal &amp; Support</h4>
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
+      <a href="gdpr.html">GDPR</a>
+      <a href="login.html">Client Login</a>
+      <a href="faq.html">Help Centre</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2024 <strong>AdminWorks Ltd.</strong> Registered in Romania</span>
+    <span>Calea Șerban Vodă 133, Central Business Park, Bucharest, Romania</span>
+  </div>
+</footer>
+
+<script>
+// ── Scroll reveal ──────────────────────────────────────────────
+const revealObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); } });
+}, { threshold: 0.06 });
+document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+// ── TOC active highlight ───────────────────────────────────────
+const sections = document.querySelectorAll('.gdpr-section');
+const tocLinks = document.querySelectorAll('.toc a');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      tocLinks.forEach(a => a.classList.remove('active'));
+      const active = document.querySelector(`.toc a[href="#${e.target.id}"]`);
+      if (active) active.classList.add('active');
+    }
+  });
+}, { rootMargin: '-20% 0px -70% 0px' });
+sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>
