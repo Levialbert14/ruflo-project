@@ -131,6 +131,46 @@
     .footer-col a:hover{color:#fff}
     .footer-bottom{border-top:1px solid rgba(255,255,255,.08);padding-top:24px;display:flex;justify-content:space-between;align-items:center;font-size:.78rem}
     .footer-bottom strong{color:rgba(255,255,255,.7)}
+
+    /* ─── HAMBURGER ─── */
+    .nav-toggle{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:6px;border:none;background:none;z-index:300;flex-shrink:0}
+    .nav-toggle span{display:block;width:24px;height:2px;background:var(--navy);border-radius:2px;transition:all .3s}
+    .nav-toggle.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+    .nav-toggle.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+    .nav-toggle.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+    /* ─── RESPONSIVE — TABLET ─── */
+    @media(max-width:900px){
+      .nav-toggle{display:flex}
+      nav{display:none;position:fixed;top:70px;left:0;right:0;bottom:0;
+        background:rgba(255,255,255,.98);backdrop-filter:blur(16px);
+        flex-direction:column;align-items:center;justify-content:center;
+        gap:28px;z-index:199}
+      nav.open{display:flex}
+      nav a{font-size:1.1rem!important}
+      nav a:not(.nav-login):not(.nav-cta)::after{display:none}
+      .stats-grid{grid-template-columns:1fr 1fr;gap:24px}
+      .results-grid{grid-template-columns:1fr}
+      .page-hero{padding:60px 5% 52px}
+      section.sec{padding:60px 5%}
+      .footer-top{grid-template-columns:1fr 1fr;gap:32px}
+      .footer-bottom{flex-direction:column;gap:8px;text-align:center}
+    }
+
+    /* ─── RESPONSIVE — MOBILE ─── */
+    @media(max-width:600px){
+      header{padding:0 4%}
+      .stats-grid{grid-template-columns:1fr 1fr;gap:14px}
+      .stat-num{font-size:2.2rem}
+      .result-header{flex-direction:column;gap:12px;align-items:flex-start}
+      .result-saving{text-align:left}
+      .result-metrics{flex-wrap:wrap;gap:14px}
+      .page-hero{padding:48px 4% 40px}
+      section.sec{padding:48px 4%}
+      .stats-section{padding:40px 4%}
+      .footer-top{grid-template-columns:1fr;gap:24px}
+      footer{padding:40px 4% 24px}
+    }
 </style>
 </head>
 <body>
@@ -141,7 +181,8 @@
     <div class="logo-mark">AW</div>
     <span class="logo-text">Admin<em>Works</em></span>
   </a>
-  <nav>
+  <button class="nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+  <nav id="mainNav">
     <a href="index.html#services">Services</a>
     <a href="results.html" class="nav-active">Current Results</a>
     <a href="index.html#about">About</a>
@@ -417,6 +458,14 @@ const revealObs = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); } });
 }, { threshold: 0.1 });
 document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+// ── Hamburger menu ─────────────────────────────────────────────
+const navToggle = document.getElementById('navToggle');
+const mainNav   = document.getElementById('mainNav');
+navToggle.addEventListener('click', () => {
+  navToggle.classList.toggle('open');
+  mainNav.classList.toggle('open');
+});
 </script>
 </body>
 </html>

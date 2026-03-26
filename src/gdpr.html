@@ -139,6 +139,43 @@
   .footer-col a:hover{color:#fff}
   .footer-bottom{border-top:1px solid rgba(255,255,255,.08);padding-top:24px;display:flex;justify-content:space-between;align-items:center;font-size:.78rem}
   .footer-bottom strong{color:rgba(255,255,255,.7)}
+
+  /* ─── HAMBURGER ─── */
+  .nav-toggle{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:6px;border:none;background:none;z-index:300;flex-shrink:0}
+  .nav-toggle span{display:block;width:24px;height:2px;background:var(--navy);border-radius:2px;transition:all .3s}
+  .nav-toggle.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+  .nav-toggle.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+  .nav-toggle.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+  /* ─── RESPONSIVE — TABLET ─── */
+  @media(max-width:900px){
+    .nav-toggle{display:flex}
+    header nav{display:none;position:fixed;top:70px;left:0;right:0;bottom:0;
+      background:rgba(255,255,255,.98);backdrop-filter:blur(16px);
+      flex-direction:column;align-items:center;justify-content:center;
+      gap:28px;z-index:199}
+    header nav.open{display:flex}
+    header nav a{font-size:1.1rem!important}
+    header nav a:not(.nav-login):not(.nav-cta)::after{display:none}
+    .content-wrap{grid-template-columns:1fr;gap:0;padding:48px 5%}
+    .toc{position:static;background:var(--bg);border-radius:14px;padding:20px;margin-bottom:36px}
+    .toc a{padding:8px 14px}
+    .rights-grid{grid-template-columns:1fr}
+    .page-hero{padding:60px 5% 52px}
+    .hero-meta{flex-direction:column;gap:10px}
+    .footer-top{grid-template-columns:1fr 1fr;gap:32px}
+    .footer-bottom{flex-direction:column;gap:8px;text-align:center}
+  }
+
+  /* ─── RESPONSIVE — MOBILE ─── */
+  @media(max-width:600px){
+    header{padding:0 4%}
+    .content-wrap{padding:36px 4%}
+    .page-hero{padding:48px 4% 40px}
+    .gdpr-section h2{font-size:1.1rem;flex-wrap:wrap}
+    .footer-top{grid-template-columns:1fr;gap:24px}
+    footer{padding:40px 4% 24px}
+  }
 </style>
 </head>
 <body>
@@ -149,7 +186,8 @@
     <div class="logo-mark">AW</div>
     <span class="logo-text">Admin<em>Works</em></span>
   </a>
-  <nav>
+  <button class="nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+  <nav id="mainNav">
     <a href="index.html#services">Services</a>
     <a href="results.html">Current Results</a>
     <a href="index.html#about">About</a>
@@ -444,6 +482,14 @@ const observer = new IntersectionObserver(entries => {
   });
 }, { rootMargin: '-20% 0px -70% 0px' });
 sections.forEach(s => observer.observe(s));
+
+// ── Hamburger menu ─────────────────────────────────────────────
+const navToggle = document.getElementById('navToggle');
+const mainNav   = document.getElementById('mainNav');
+navToggle.addEventListener('click', () => {
+  navToggle.classList.toggle('open');
+  mainNav.classList.toggle('open');
+});
 </script>
 
 </body>
