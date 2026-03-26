@@ -448,5 +448,138 @@ mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeM
 window.addEventListener('hashchange', () => document.body.classList.remove('menu-open'));
 </script>
 
+
+<!-- CHAT WIDGET -->
+<style>
+.chat-widget{position:fixed;bottom:28px;right:28px;z-index:9999;font-family:'Segoe UI',system-ui,sans-serif}
+.chat-btn{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#0ea5e9,#0d9488);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 24px rgba(14,165,233,.4);transition:transform .3s,box-shadow .3s;position:relative}
+.chat-btn:hover{transform:scale(1.1);box-shadow:0 8px 32px rgba(14,165,233,.5)}
+.chat-btn .icon-chat,.chat-btn .icon-close{width:26px;height:26px;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)}
+.chat-btn .icon-close{display:none}
+.chat-btn.open .icon-chat{display:none}
+.chat-btn.open .icon-close{display:block}
+.chat-popup{position:fixed;bottom:96px;right:28px;width:340px;background:#fff;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,.15);overflow:hidden;opacity:0;visibility:hidden;transform:translateY(16px);transition:opacity .3s,transform .3s,visibility 0s .3s;z-index:9998}
+.chat-popup.open{opacity:1;visibility:visible;transform:translateY(0);transition:opacity .3s,transform .3s}
+.chat-head{background:linear-gradient(135deg,#0ea5e9,#0d9488);padding:16px 20px;display:flex;align-items:center;gap:12px}
+.chat-head-av{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.chat-head-av svg{width:22px;height:22px;fill:#fff}
+.chat-head-info h3{margin:0;color:#fff;font-size:.95rem;font-weight:600}
+.chat-head-info span{color:rgba(255,255,255,.8);font-size:.75rem;display:flex;align-items:center;gap:5px;margin-top:2px}
+.chat-dot{width:7px;height:7px;border-radius:50%;background:#4ade80;display:inline-block}
+.chat-msgs{padding:16px;height:180px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;background:#f8fafc}
+.chat-msg-row{display:flex;gap:8px;align-items:flex-start}
+.chat-msg-av{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#0ea5e9,#0d9488);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.chat-msg-av svg{width:15px;height:15px;fill:#fff}
+.chat-bubble-bot{background:#fff;border-radius:12px 12px 12px 2px;padding:10px 14px;font-size:.83rem;color:#334155;line-height:1.5;box-shadow:0 1px 4px rgba(0,0,0,.07);max-width:82%}
+.chat-bubble-usr{background:#0ea5e9;color:#fff;border-radius:12px 12px 2px 12px;padding:10px 14px;font-size:.83rem;line-height:1.5;max-width:82%;margin-left:auto}
+.chat-quick{padding:10px 16px;border-top:1px solid #f1f5f9}
+.chat-quick p{margin:0 0 6px;font-size:.73rem;color:#94a3b8;font-weight:500;text-transform:uppercase;letter-spacing:.04em}
+.chat-quick-btns{display:flex;flex-wrap:wrap;gap:6px}
+.chat-quick-btns button{border:1px solid #e2e8f0;background:#fff;color:#475569;font-size:.75rem;padding:5px 11px;border-radius:20px;cursor:pointer;transition:all .2s;line-height:1.4}
+.chat-quick-btns button:hover{background:#0ea5e9;color:#fff;border-color:#0ea5e9}
+.chat-input-row{display:flex;align-items:center;gap:8px;padding:12px 16px;border-top:1px solid #f1f5f9}
+.chat-input-row input{flex:1;border:1px solid #e2e8f0;border-radius:20px;padding:8px 14px;font-size:.83rem;outline:none;color:#334155;background:#f8fafc}
+.chat-input-row input:focus{border-color:#0ea5e9;background:#fff}
+.chat-send-btn{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#0ea5e9,#0d9488);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .2s}
+.chat-send-btn:hover{transform:scale(1.1)}
+.chat-send-btn svg{width:16px;height:16px;fill:#fff}
+.chat-welcome-bbl{position:fixed;bottom:96px;right:90px;background:#fff;border-radius:14px 14px 4px 14px;padding:12px 36px 12px 14px;box-shadow:0 4px 20px rgba(0,0,0,.13);font-size:.83rem;color:#334155;max-width:190px;line-height:1.5;z-index:9997;animation:cwb-in .4s ease}
+.chat-welcome-bbl .cwb-x{position:absolute;top:7px;right:9px;background:none;border:none;cursor:pointer;color:#94a3b8;font-size:13px;line-height:1;padding:0}
+@keyframes cwb-in{from{opacity:0;transform:scale(.85) translateY(8px)}to{opacity:1;transform:scale(1) translateY(0)}}
+@media(max-width:400px){.chat-popup{right:12px;left:12px;width:auto}.chat-widget,.chat-welcome-bbl{right:16px}}
+</style>
+
+<div class="chat-widget">
+  <div class="chat-welcome-bbl" id="chatWelcomeBbl">
+    &#128075; Hi! Got questions? We&rsquo;re here to help.
+    <button class="cwb-x" onclick="document.getElementById('chatWelcomeBbl').style.display='none'">&#10005;</button>
+  </div>
+  <button class="chat-btn" id="chatToggleBtn" aria-label="Open chat">
+    <svg class="icon-chat" viewBox="0 0 24 24" fill="#fff"><path d="M20 2H4a2 2 0 00-2 2v18l4-4h14a2 2 0 002-2V4a2 2 0 00-2-2z"/></svg>
+    <svg class="icon-close" viewBox="0 0 24 24" fill="none"><line x1="18" y1="6" x2="6" y2="18" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/><line x1="6" y1="6" x2="18" y2="18" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/></svg>
+  </button>
+  <div class="chat-popup" id="chatPopupPanel">
+    <div class="chat-head">
+      <div class="chat-head-av"><svg viewBox="0 0 24 24"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg></div>
+      <div class="chat-head-info">
+        <h3>AdminWorks Assistant</h3>
+        <span><span class="chat-dot"></span> Online now</span>
+      </div>
+    </div>
+    <div class="chat-msgs" id="chatMsgsArea">
+      <div class="chat-msg-row">
+        <div class="chat-msg-av"><svg viewBox="0 0 24 24"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg></div>
+        <div class="chat-bubble-bot">&#128075; Hi! I&rsquo;m the AdminWorks assistant. How can I help you today?</div>
+      </div>
+    </div>
+    <div class="chat-quick">
+      <p>Frequently asked</p>
+      <div class="chat-quick-btns">
+        <button onclick="chatWidgetSend('What services do you offer?')">What services do you offer?</button>
+        <button onclick="chatWidgetSend('How can I contact you?')">How can I contact you?</button>
+        <button onclick="chatWidgetSend('Where are you located?')">Where are you located?</button>
+        <button onclick="chatWidgetSend('How do I get a quote?')">How do I get a quote?</button>
+      </div>
+    </div>
+    <div class="chat-input-row">
+      <input type="text" id="chatWidgetInput" placeholder="Type your message&hellip;" />
+      <button class="chat-send-btn" onclick="chatWidgetSend()"><svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/></svg></button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var btn=document.getElementById('chatToggleBtn');
+  var popup=document.getElementById('chatPopupPanel');
+  var welcome=document.getElementById('chatWelcomeBbl');
+  btn.addEventListener('click',function(){
+    btn.classList.toggle('open');
+    popup.classList.toggle('open');
+    if(welcome) welcome.style.display='none';
+  });
+  var replies={
+    'service':'We offer admin outsourcing, compliance management, recruitment, reporting and bookkeeping. Check our Services section for full details!',
+    'contact':'You can reach us via the contact form on this page. We typically respond within one business day!',
+    'locat':'We are based in Romania, working globally. Our team operates across multiple time zones to serve clients worldwide.',
+    'quote':'Click the Get a Quote button at the top of the page, fill in your details and we will get back to you promptly!'
+  };
+  window.chatWidgetSend=function(text){
+    var input=document.getElementById('chatWidgetInput');
+    var msg=text||input.value.trim();
+    if(!msg) return;
+    var area=document.getElementById('chatMsgsArea');
+    var userDiv=document.createElement('div');
+    userDiv.style.cssText='display:flex;justify-content:flex-end';
+    var userBubble=document.createElement('div');
+    userBubble.className='chat-bubble-usr';
+    userBubble.textContent=msg;
+    userDiv.appendChild(userBubble);
+    area.appendChild(userDiv);
+    input.value='';
+    area.scrollTop=area.scrollHeight;
+    var lower=msg.toLowerCase();
+    var match=null;
+    for(var k in replies){ if(lower.indexOf(k)>-1){match=replies[k];break;} }
+    var reply=match||'Thanks for reaching out! Our team will get back to you shortly. You can also use the contact form for a faster response.';
+    setTimeout(function(){
+      var botRow=document.createElement('div');
+      botRow.className='chat-msg-row';
+      botRow.innerHTML='<div class="chat-msg-av"><svg viewBox="0 0 24 24"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z" fill="#fff"/></svg></div>';
+      var botBubble=document.createElement('div');
+      botBubble.className='chat-bubble-bot';
+      botBubble.textContent=reply;
+      botRow.appendChild(botBubble);
+      area.appendChild(botRow);
+      area.scrollTop=area.scrollHeight;
+    },650);
+  };
+  document.getElementById('chatWidgetInput').addEventListener('keydown',function(e){
+    if(e.key==='Enter') chatWidgetSend();
+  });
+  setTimeout(function(){if(welcome) welcome.style.display='none';},6000);
+})();
+</script>
+
 </body>
 </html>
