@@ -22,10 +22,10 @@
     background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);
     border-bottom:1px solid var(--border);
   }
-  .logo{display:flex;align-items:center;gap:10px;text-decoration:none}
-  .logo-mark{width:36px;height:36px;background:var(--blue);border-radius:8px;display:grid;place-items:center;color:#fff;font-weight:900;font-size:13px}
-  .logo-text{font-weight:800;font-size:1.1rem;color:var(--navy)}
-  .logo-text em{font-style:normal;color:var(--blue)}
+  .logo{display:flex;align-items:center;text-decoration:none}
+  .logo img{height:30px;width:auto;display:block}
+  
+  
   header nav{display:flex;gap:30px;align-items:center}
   header nav a{color:var(--muted);text-decoration:none;font-size:.87rem;font-weight:500;transition:color .15s}
   header nav a:hover{color:var(--navy)}
@@ -219,8 +219,7 @@
 <!-- ─── HEADER ─── -->
 <header>
   <a class="logo" href="index.html">
-    <div class="logo-mark">AW</div>
-    <span class="logo-text">Admin<em>Works</em></span>
+    <img src="logo-dark.svg" alt="AdminWorks">
   </a>
   <button class="nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
   <nav id="mainNav">
@@ -474,8 +473,7 @@
   <div class="footer-top">
     <div class="footer-brand">
       <a class="logo" href="index.html" style="margin-bottom:2px">
-        <div class="logo-mark">AW</div>
-        <span class="logo-text" style="color:#fff">Admin<em>Works</em></span>
+        <img src="logo.svg" alt="AdminWorks">
       </a>
       <p>We help businesses reclaim time by handling the operational work that slows them down. Based in Romania, working globally.</p>
     </div>
