@@ -584,17 +584,9 @@ window.addEventListener('hashchange', () => document.body.classList.remove('menu
 .chat-send-btn{width:36px;height:36px;border-radius:50%;background:#132651;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .2s}
 .chat-send-btn:hover{transform:scale(1.1)}
 .chat-send-btn svg{width:16px;height:16px;fill:#fff}
-.chat-welcome-bbl{position:fixed;bottom:96px;right:90px;background:#fff;border-radius:14px 14px 4px 14px;padding:12px 36px 12px 14px;box-shadow:0 4px 20px rgba(0,0,0,.13);font-size:.83rem;color:#334155;max-width:190px;line-height:1.5;z-index:9997;animation:cwb-in .4s ease}
-.chat-welcome-bbl .cwb-x{position:absolute;top:7px;right:9px;background:none;border:none;cursor:pointer;color:#94a3b8;font-size:13px;line-height:1;padding:0}
-@keyframes cwb-in{from{opacity:0;transform:scale(.85) translateY(8px)}to{opacity:1;transform:scale(1) translateY(0)}}
-@media(max-width:400px){.chat-popup{right:12px;left:12px;width:auto}.chat-widget,.chat-welcome-bbl{right:16px}}
 </style>
 
 <div class="chat-widget">
-  <div class="chat-welcome-bbl" id="chatWelcomeBbl">
-    &#128075; Hi! Got questions? We&rsquo;re here to help.
-    <button class="cwb-x" onclick="document.getElementById('chatWelcomeBbl').style.display='none'">&#10005;</button>
-  </div>
   <button class="chat-btn" id="chatToggleBtn" aria-label="Open chat">
     <svg class="icon-chat" viewBox="0 0 24 24" fill="#fff"><path d="M20 2H4a2 2 0 00-2 2v18l4-4h14a2 2 0 002-2V4a2 2 0 00-2-2z"/></svg>
     <svg class="icon-close" viewBox="0 0 24 24" fill="none"><line x1="18" y1="6" x2="6" y2="18" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/><line x1="6" y1="6" x2="18" y2="18" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/></svg>
@@ -633,11 +625,9 @@ window.addEventListener('hashchange', () => document.body.classList.remove('menu
 (function(){
   var btn=document.getElementById('chatToggleBtn');
   var popup=document.getElementById('chatPopupPanel');
-  var welcome=document.getElementById('chatWelcomeBbl');
   btn.addEventListener('click',function(){
     btn.classList.toggle('open');
     popup.classList.toggle('open');
-    if(welcome) welcome.style.display='none';
   });
   var replies={
     'service':'We offer admin outsourcing, compliance management, recruitment, reporting and bookkeeping. Check our Services section for full details!',
@@ -678,7 +668,6 @@ window.addEventListener('hashchange', () => document.body.classList.remove('menu
   document.getElementById('chatWidgetInput').addEventListener('keydown',function(e){
     if(e.key==='Enter') chatWidgetSend();
   });
-  setTimeout(function(){if(welcome) welcome.style.display='none';},6000);
 })();
 </script>
 
