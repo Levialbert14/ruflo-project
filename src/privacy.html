@@ -152,16 +152,22 @@
   .nav-toggle.open span:nth-child(2){opacity:0;transform:scaleX(0)}
   .nav-toggle.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
 
-  /* ─── RESPONSIVE — TABLET ─── */
-  @media(max-width:900px){
+  /* ─── RESPONSIVE — NAV / HAMBURGER (≤1024px) ─── */
+  @media(max-width:1024px){
     .nav-toggle{display:flex}
     header nav{display:none;position:fixed;top:70px;left:0;right:0;bottom:0;
       background:rgba(255,255,255,.98);backdrop-filter:blur(16px);
       flex-direction:column;align-items:center;justify-content:center;
-      gap:28px;z-index:199}
+      gap:32px;z-index:199}
     header nav.open{display:flex}
-    header nav a{font-size:1.1rem!important}
+    header nav a{font-size:1.15rem!important;color:var(--navy)!important}
     header nav a:not(.nav-login):not(.nav-cta)::after{display:none}
+    .nav-login{border-color:var(--border)!important}
+    .nav-cta{animation:none}
+  }
+
+  /* ─── RESPONSIVE — TABLET (≤900px) ─── */
+  @media(max-width:900px){
     .content-wrap{grid-template-columns:1fr;gap:0;padding:48px 5%}
     .toc{position:static;background:var(--bg);border-radius:14px;padding:20px;margin-bottom:36px}
     .toc a{padding:8px 14px}
