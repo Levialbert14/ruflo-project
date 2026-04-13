@@ -12,6 +12,7 @@
     }
     html{scroll-behavior:smooth}
     body{font-family:'Segoe UI',system-ui,sans-serif;color:var(--text);background:#fff;overflow-x:hidden}
+    body.menu-open{overflow:hidden}
 
     /* ─── HEADER ─── */
     header{
@@ -21,13 +22,13 @@
       background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);
       border-bottom:1px solid var(--border);
     }
-    .logo{display:flex;align-items:center;gap:10px;text-decoration:none}
-    .logo-mark{width:36px;height:36px;background:var(--blue);border-radius:8px;display:grid;place-items:center;color:#fff;font-weight:900;font-size:13px}
-    .logo-text{font-weight:800;font-size:1.1rem;color:var(--navy)}
-    .logo-text em{font-style:normal;color:var(--blue)}
+    .logo{display:flex;align-items:center;text-decoration:none;width:fit-content;background:linear-gradient(rgba(37,99,235,.2),rgba(37,99,235,.2)),#0f172a;border:1px solid rgba(96,165,250,.35);border-radius:9999px;padding:6px 16px;box-shadow:0 8px 32px rgba(0,0,0,.2)}
+    .logo img{height:20px;width:auto;display:block;transition:transform .35s ease}
+    .logo:hover img{transform:scale(1.15)}
+    
     nav{display:flex;gap:30px;align-items:center}
-    nav a{color:var(--muted);text-decoration:none;font-size:.87rem;font-weight:500;transition:color .15s}
-    nav a:hover{color:var(--navy)}
+    nav a{color:var(--muted);text-decoration:none;font-size:.87rem;font-weight:500;transition:color .15s,transform .35s ease;display:inline-block}
+    nav a:hover{color:var(--navy);transform:scale(1.15)}
     .nav-login{border:1.5px solid var(--border);color:var(--navy)!important;padding:7px 18px;border-radius:8px;font-weight:600!important}
     .nav-login:hover{border-color:var(--blue)!important;color:var(--blue)!important}
     .nav-cta{background:#000;color:#fff!important;padding:9px 20px;border-radius:8px;font-weight:600!important}
@@ -280,7 +281,7 @@
       background:radial-gradient(circle,rgba(255,255,255,.04) 0%,transparent 55%);
       animation:glow-rotate 9s linear infinite
     }
-    @keyframes glow-rotate{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+    @keyframes glow-rotate{from{transform:rotate(0deg)}to{transform:rotate(-360deg)}}
 
     /* Testimonial quote ghost */
     .testi{position:relative;overflow:hidden}
@@ -299,6 +300,98 @@
     .footer-col a:hover{color:#fff}
     .footer-bottom{border-top:1px solid rgba(255,255,255,.08);padding-top:24px;display:flex;justify-content:space-between;align-items:center;font-size:.78rem}
     .footer-bottom strong{color:rgba(255,255,255,.7)}
+
+    /* ─── HAMBURGER ─── */
+    .nav-toggle{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:6px;border:none;background:none;z-index:400;flex-shrink:0}
+    .nav-toggle span{display:block;width:24px;height:2px;background:var(--navy);border-radius:2px;transition:all .3s}
+    .nav-toggle.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+    .nav-toggle.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+    .nav-toggle.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+    /* ─── MOBILE MENU OVERLAY ─── */
+    .mobile-menu{
+      position:fixed;top:70px;left:0;right:0;bottom:0;z-index:399;
+      display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;
+      background:#fff;padding:32px 24px;
+      visibility:hidden;opacity:0;transform:translateY(-12px);
+      transition:opacity .28s ease,transform .28s ease,visibility 0s .28s;
+      pointer-events:none;overscroll-behavior:contain;
+    }
+    .mobile-menu.open{
+      visibility:visible;opacity:1;transform:translateY(0);
+      transition:opacity .28s ease,transform .28s ease;
+      pointer-events:auto;
+    }
+    .mobile-menu a:not(.nav-login):not(.nav-cta){
+      display:block;width:100%;max-width:300px;text-align:center;
+      font-size:1.05rem;font-weight:600;color:var(--navy);text-decoration:none;
+      padding:16px 0;border-bottom:1px solid var(--border);transition:color .15s;
+    }
+    .mobile-menu a:not(.nav-login):not(.nav-cta):first-child{border-top:1px solid var(--border)}
+    .mobile-menu a:not(.nav-login):not(.nav-cta):hover{color:var(--blue)}
+    .mob-sep{display:block;width:100%;max-width:300px;margin:16px 0 4px}
+    .mobile-menu .nav-login{
+      display:block;width:auto;padding:11px 36px;
+      border:1.5px solid var(--navy)!important;border-radius:9px;
+      color:var(--navy)!important;font-weight:600;text-decoration:none;
+      margin-bottom:10px;font-size:.9rem;
+    }
+    .mobile-menu .nav-cta{
+      display:block;background:#000!important;color:#fff!important;
+      padding:12px 36px;border-radius:9px;
+      font-weight:700;text-decoration:none;font-size:.9rem;
+    }
+    .mobile-menu .nav-login:hover{border-color:var(--blue)!important;color:var(--blue)!important}
+    .mobile-menu .nav-cta:hover{background:#222!important}
+    @media(min-width:1025px){.mobile-menu{display:none!important}}
+
+    /* ─── RESPONSIVE — NAV / HAMBURGER (≤1024px) ─── */
+    @media(max-width:1024px){
+      .nav-toggle{display:flex}
+      nav{display:none}
+    }
+
+    /* ─── RESPONSIVE — TABLET (≤900px) ─── */
+    @media(max-width:900px){
+      .hero{grid-template-columns:1fr;min-height:auto}
+      .hero-right{height:280px}
+      .hero-left{padding:56px 6%}
+      .steps{grid-template-columns:1fr 1fr;gap:24px}
+      .services-grid{grid-template-columns:1fr 1fr;gap:16px}
+      .team-grid{grid-template-columns:1fr 1fr;gap:16px}
+      .stats-grid{grid-template-columns:1fr 1fr;gap:24px}
+      .testi-grid{grid-template-columns:1fr}
+      .contact-wrapper{grid-template-columns:1fr;gap:36px}
+      .office-grid{grid-template-columns:1fr 1fr;grid-template-rows:auto}
+      .office-grid img:first-child{grid-row:span 1}
+      section.sec{padding:60px 5%}
+      .stats-section{padding:52px 5%}
+      .footer-top{grid-template-columns:1fr 1fr;gap:32px}
+      .footer-bottom{flex-direction:column;gap:8px;text-align:center}
+    }
+
+    /* ─── RESPONSIVE — MOBILE (≤600px) ─── */
+    @media(max-width:600px){
+      header{padding:0 4%}
+      .hero-left{padding:48px 4%}
+      .hero-right{height:220px}
+      .hero-btns{flex-direction:column;gap:10px}
+      .hero-btns a{text-align:center;display:block}
+      .steps{grid-template-columns:1fr}
+      .services-grid{grid-template-columns:1fr}
+      .team-grid{grid-template-columns:1fr 1fr}
+      .stats-grid{grid-template-columns:1fr 1fr;gap:16px}
+      .stat-num{font-size:2.2rem}
+      .testi-grid{grid-template-columns:1fr}
+      .form-row{grid-template-columns:1fr}
+      .office-grid{grid-template-columns:1fr;grid-template-rows:auto}
+      section.sec{padding:48px 4%}
+      .stats-section{padding:40px 4%}
+      .logos-strip{padding:24px 4%}
+      .footer-top{grid-template-columns:1fr;gap:24px}
+      footer{padding:40px 4% 24px}
+      .hero-float{display:none}
+    }
   </style>
 </head>
 <body>
@@ -306,10 +399,10 @@
 <!-- ─── HEADER ─── -->
 <header>
   <a class="logo" href="index.html">
-    <div class="logo-mark">AW</div>
-    <span class="logo-text">Admin<em>Works</em></span>
+    <img src="logo.svg" alt="AdminWorks">
   </a>
-  <nav>
+  <button class="nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+  <nav id="mainNav">
     <a href="#services">Services</a>
     <a href="results.html">Current Results</a>
     <a href="#about">About</a>
@@ -319,6 +412,18 @@
     <a href="#contact" class="nav-cta">Get a Quote</a>
   </nav>
 </header>
+
+<!-- Mobile menu — outside header to avoid backdrop-filter containment -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#services">Services</a>
+  <a href="results.html">Current Results</a>
+  <a href="#about">About</a>
+  <a href="#team">Team</a>
+  <a href="#contact">Contact</a>
+  <span class="mob-sep"></span>
+  <a href="login.html" class="nav-login">Log In</a>
+  <a href="#contact" class="nav-cta">Get a Quote</a>
+</div>
 
 <!-- ─── HERO ─── -->
 <section class="hero">
@@ -565,8 +670,7 @@
   <div class="footer-top">
     <div class="footer-brand">
       <a class="logo" href="index.html" style="margin-bottom:2px">
-        <div class="logo-mark">AW</div>
-        <span class="logo-text" style="color:#fff">Admin<em>Works</em></span>
+        <img src="logo.svg" alt="AdminWorks">
       </a>
       <p>We help businesses reclaim time by handling the operational work that slows them down. Based in London, working globally.</p>
     </div>
@@ -576,7 +680,7 @@
       <a href="#">Invoicing</a>
       <a href="#">Customer Support</a>
       <a href="#">Data Entry</a>
-      <a href="#">Reporting</a>
+      <a href="reporting.html">Reporting</a>
     </div>
     <div class="footer-col">
       <h4>Company</h4>
@@ -588,11 +692,11 @@
     </div>
     <div class="footer-col">
       <h4>Legal &amp; Support</h4>
-      <a href="#">Privacy Policy</a>
+      <a href="privacy.html">Privacy Policy</a>
       <a href="#">Terms of Service</a>
-      <a href="#">GDPR</a>
+      <a href="gdpr.html">GDPR</a>
       <a href="login.html">Client Login</a>
-      <a href="#">Help Centre</a>
+      <a href="faq.html">Help Centre</a>
     </div>
   </div>
   <div class="footer-bottom">
@@ -659,6 +763,145 @@ if (floatVal) {
     floatVal.textContent = base.toLocaleString() + ' tasks';
   }, 3200);
 }
+
+// ── Mobile menu ─────────────────────────────────────────────────
+const navToggle = document.getElementById('navToggle');
+const mobileMenu = document.getElementById('mobileMenu');
+function closeMobileMenu(){
+  navToggle.classList.remove('open');
+  mobileMenu.classList.remove('open');
+  document.body.classList.remove('menu-open');
+}
+navToggle.addEventListener('click', () => {
+  const isOpen = mobileMenu.classList.toggle('open');
+  navToggle.classList.toggle('open');
+  document.body.classList.toggle('menu-open', isOpen);
+});
+mobileMenu.addEventListener('click', e => { if(e.target === mobileMenu) closeMobileMenu(); });
+mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMobileMenu));
+window.addEventListener('hashchange', () => document.body.classList.remove('menu-open'));
 </script>
+
+<!-- CHAT WIDGET -->
+<style>
+.chat-widget{position:fixed;bottom:28px;right:28px;z-index:9999;font-family:'Segoe UI',system-ui,sans-serif}
+.chat-btn{width:56px;height:56px;border-radius:50%;background:#132651;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 24px rgba(19,38,81,.5);transition:transform .3s,box-shadow .3s;position:relative}
+.chat-btn:hover{transform:scale(1.1);box-shadow:0 8px 32px rgba(19,38,81,.6)}
+.chat-btn .icon-chat,.chat-btn .icon-close{width:26px;height:26px;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)}
+.chat-btn .icon-close{display:none}
+.chat-btn.open .icon-chat{display:none}
+.chat-btn.open .icon-close{display:block}
+.chat-popup{position:fixed;bottom:96px;right:28px;width:340px;background:#fff;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,.15);overflow:hidden;opacity:0;visibility:hidden;transform:translateY(16px);transition:opacity .3s,transform .3s,visibility 0s .3s;z-index:9998}
+.chat-popup.open{opacity:1;visibility:visible;transform:translateY(0);transition:opacity .3s,transform .3s}
+.chat-head{background:#132651;padding:16px 20px;display:flex;align-items:center;gap:12px}
+.chat-head-av{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.chat-head-av svg{width:22px;height:22px;fill:#fff}
+.chat-head-info h3{margin:0;color:#fff;font-size:.95rem;font-weight:600}
+.chat-head-info span{color:rgba(255,255,255,.8);font-size:.75rem;display:flex;align-items:center;gap:5px;margin-top:2px}
+.chat-dot{width:7px;height:7px;border-radius:50%;background:#4ade80;display:inline-block}
+.chat-msgs{padding:16px;height:180px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;background:#f8fafc}
+.chat-msg-row{display:flex;gap:8px;align-items:flex-start}
+.chat-msg-av{width:28px;height:28px;border-radius:50%;background:#132651;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.chat-msg-av svg{width:15px;height:15px;fill:#fff}
+.chat-bubble-bot{background:#fff;border-radius:12px 12px 12px 2px;padding:10px 14px;font-size:.83rem;color:#334155;line-height:1.5;box-shadow:0 1px 4px rgba(0,0,0,.07);max-width:82%}
+.chat-bubble-usr{background:#132651;color:#fff;border-radius:12px 12px 2px 12px;padding:10px 14px;font-size:.83rem;line-height:1.5;max-width:82%;margin-left:auto}
+.chat-quick{padding:10px 16px;border-top:1px solid #f1f5f9}
+.chat-quick p{margin:0 0 6px;font-size:.73rem;color:#94a3b8;font-weight:500;text-transform:uppercase;letter-spacing:.04em}
+.chat-quick-btns{display:flex;flex-wrap:wrap;gap:6px}
+.chat-quick-btns button{border:1px solid #e2e8f0;background:#fff;color:#475569;font-size:.75rem;padding:5px 11px;border-radius:20px;cursor:pointer;transition:all .2s;line-height:1.4}
+.chat-quick-btns button:hover{background:#132651;color:#fff;border-color:#132651}
+.chat-input-row{display:flex;align-items:center;gap:8px;padding:12px 16px;border-top:1px solid #f1f5f9}
+.chat-input-row input{flex:1;border:1px solid #e2e8f0;border-radius:20px;padding:8px 14px;font-size:.83rem;outline:none;color:#334155;background:#f8fafc}
+.chat-input-row input:focus{border-color:#132651;background:#fff}
+.chat-send-btn{width:36px;height:36px;border-radius:50%;background:#132651;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .2s}
+.chat-send-btn:hover{transform:scale(1.1)}
+.chat-send-btn svg{width:16px;height:16px;fill:#fff}
+</style>
+
+<div class="chat-widget">
+  <button class="chat-btn" id="chatToggleBtn" aria-label="Open chat">
+    <svg class="icon-chat" viewBox="0 0 24 24" fill="#fff"><path d="M20 2H4a2 2 0 00-2 2v18l4-4h14a2 2 0 002-2V4a2 2 0 00-2-2z"/></svg>
+    <svg class="icon-close" viewBox="0 0 24 24" fill="none"><line x1="18" y1="6" x2="6" y2="18" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/><line x1="6" y1="6" x2="18" y2="18" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/></svg>
+  </button>
+  <div class="chat-popup" id="chatPopupPanel">
+    <div class="chat-head">
+      <div class="chat-head-av"><svg viewBox="0 0 24 24"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg></div>
+      <div class="chat-head-info">
+        <h3>AdminWorks Assistant</h3>
+        <span><span class="chat-dot"></span> Online now</span>
+      </div>
+    </div>
+    <div class="chat-msgs" id="chatMsgsArea">
+      <div class="chat-msg-row">
+        <div class="chat-msg-av"><svg viewBox="0 0 24 24"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg></div>
+        <div class="chat-bubble-bot">&#128075; Hi! I&rsquo;m the AdminWorks assistant. How can I help you today?</div>
+      </div>
+    </div>
+    <div class="chat-quick">
+      <p>Frequently asked</p>
+      <div class="chat-quick-btns">
+        <button onclick="chatWidgetSend('What services do you offer?')">What services do you offer?</button>
+        <button onclick="chatWidgetSend('How can I contact you?')">How can I contact you?</button>
+        <button onclick="chatWidgetSend('Where are you located?')">Where are you located?</button>
+        <button onclick="chatWidgetSend('How do I get a quote?')">How do I get a quote?</button>
+      </div>
+    </div>
+    <div class="chat-input-row">
+      <input type="text" id="chatWidgetInput" placeholder="Type your message&hellip;" />
+      <button class="chat-send-btn" onclick="chatWidgetSend()"><svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/></svg></button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var btn=document.getElementById('chatToggleBtn');
+  var popup=document.getElementById('chatPopupPanel');
+  btn.addEventListener('click',function(){
+    btn.classList.toggle('open');
+    popup.classList.toggle('open');
+  });
+  var replies={
+    'service':'We offer admin outsourcing, compliance management, recruitment, reporting and bookkeeping. Check our Services section for full details!',
+    'contact':'You can reach us via the contact form on this page. We typically respond within one business day!',
+    'locat':'We are based in Romania, working globally. Our team operates across multiple time zones to serve clients worldwide.',
+    'quote':'Click the Get a Quote button at the top of the page, fill in your details and we will get back to you promptly!'
+  };
+  window.chatWidgetSend=function(text){
+    var input=document.getElementById('chatWidgetInput');
+    var msg=text||input.value.trim();
+    if(!msg) return;
+    var area=document.getElementById('chatMsgsArea');
+    var userDiv=document.createElement('div');
+    userDiv.style.cssText='display:flex;justify-content:flex-end';
+    var userBubble=document.createElement('div');
+    userBubble.className='chat-bubble-usr';
+    userBubble.textContent=msg;
+    userDiv.appendChild(userBubble);
+    area.appendChild(userDiv);
+    input.value='';
+    area.scrollTop=area.scrollHeight;
+    var lower=msg.toLowerCase();
+    var match=null;
+    for(var k in replies){ if(lower.indexOf(k)>-1){match=replies[k];break;} }
+    var reply=match||'Thanks for reaching out! Our team will get back to you shortly. You can also use the contact form for a faster response.';
+    setTimeout(function(){
+      var botRow=document.createElement('div');
+      botRow.className='chat-msg-row';
+      botRow.innerHTML='<div class="chat-msg-av"><svg viewBox="0 0 24 24"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z" fill="#fff"/></svg></div>';
+      var botBubble=document.createElement('div');
+      botBubble.className='chat-bubble-bot';
+      botBubble.textContent=reply;
+      botRow.appendChild(botBubble);
+      area.appendChild(botRow);
+      area.scrollTop=area.scrollHeight;
+    },650);
+  };
+  document.getElementById('chatWidgetInput').addEventListener('keydown',function(e){
+    if(e.key==='Enter') chatWidgetSend();
+  });
+})();
+</script>
+
 </body>
 </html>
